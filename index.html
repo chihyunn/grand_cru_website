@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grand Cru: The Winemaker — Game Preview</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0f0608;
+    color: #e8d5b7;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+  }
+
+  /* ========== UTILITY ========== */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .section-divider {
+    border: none;
+    border-top: 1px solid #2d1520;
+    margin: 60px 0;
+  }
+
+  /* ========== LANG TOGGLE ========== */
+  .lang-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 999;
+    display: flex;
+    border: 1px solid rgba(201,176,55,0.3);
+    border-radius: 6px;
+    overflow: hidden;
+    background: rgba(15,6,8,0.9);
+    backdrop-filter: blur(8px);
+  }
+  .lang-toggle button {
+    background: none;
+    border: none;
+    color: #888;
+    padding: 6px 14px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .lang-toggle button.active {
+    background: rgba(201,176,55,0.15);
+    color: #c9b037;
+  }
+  body.lang-en [data-lang="ko"] { display: none; }
+  body.lang-ko [data-lang="en"] { display: none; }
+
+  /* ========== HERO ========== */
+  .hero {
+    text-align: center;
+    padding: 80px 24px 60px;
+    background: linear-gradient(180deg, #1a0a0e 0%, #0f0608 60%, #0f0608 100%);
+    border-bottom: 1px solid #2d1520;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse 600px 300px at 50% 20%, rgba(114,47,55,0.15) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #c9b037;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 56px);
+    color: #c9b037;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    line-height: 1.15;
+    position: relative;
+  }
+  .hero-subtitle {
+    font-size: clamp(16px, 2.5vw, 22px);
+    color: #e8d5b7;
+    margin-bottom: 32px;
+    font-weight: 300;
+    position: relative;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .hero-meta-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+  }
+  .hero-meta-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #f0e0c0;
+  }
+  .hero-meta-value.price {
+    color: #c9b037;
+    font-size: 24px;
+  }
+  .hero-genre {
+    margin-top: 24px;
+    position: relative;
+  }
+  .genre-tag {
+    display: inline-block;
+    padding: 4px 14px;
+    border: 1px solid #3a1a28;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #c9b037;
+    margin: 4px;
+    background: #1a0a0e;
+  }
+
+  /* ========== SECTION TITLES ========== */
+  .section-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .section-header h2 {
+    font-size: 28px;
+    color: #c9b037;
+    margin-bottom: 8px;
+  }
+  .section-header .subtitle {
+    font-size: 14px;
+    color: #888;
+  }
+
+  /* ========== FEATURES GRID ========== */
+  .features-section { padding: 60px 24px; }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .feature-card {
+    background: #1a0a0e;
+    border: 1px solid #2d1520;
+    border-radius: 10px;
+    padding: 28px 24px;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .feature-card:hover {
+    border-color: #c9b037;
+    transform: translateY(-2px);
+  }
+  .feature-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .feature-card h3 {
+    font-size: 17px;
+    color: #f0e0c0;
+    margin-bottom: 8px;
+  }
+  .feature-card p {
+    font-size: 13px;
+    color: #999;
+    line-height: 1.6;
+  }
+
+  /* ========== SEASON CYCLE ========== */
+  .season-section { padding: 60px 24px; }
+  .season-timeline {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .season-timeline::before {
+    content: '';
+    position: absolute;
+    top: 48px;
+    left: 12.5%;
+    right: 12.5%;
+    height: 2px;
+    background: linear-gradient(90deg, #4a7a3a, #c9b037, #722f37, #4a6a8a);
+  }
+  .season-card {
+    text-align: center;
+    position: relative;
+    padding: 0 12px;
+  }
+  .season-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 38px auto 20px;
+    border: 3px solid #0f0608;
+    position: relative;
+    z-index: 1;
+  }
+  .season-card:nth-child(1) .season-dot { background: #4a7a3a; box-shadow: 0 0 12px #4a7a3a55; }
+  .season-card:nth-child(2) .season-dot { background: #c9b037; box-shadow: 0 0 12px #c9b03755; }
+  .season-card:nth-child(3) .season-dot { background: #722f37; box-shadow: 0 0 12px #722f3755; }
+  .season-card:nth-child(4) .season-dot { background: #4a6a8a; box-shadow: 0 0 12px #4a6a8a55; }
+  .season-emoji {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .season-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .season-card:nth-child(1) .season-name { color: #4a7a3a; }
+  .season-card:nth-child(2) .season-name { color: #c9b037; }
+  .season-card:nth-child(3) .season-name { color: #722f37; }
+  .season-card:nth-child(4) .season-name { color: #4a6a8a; }
+  .season-name-ko {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 12px;
+  }
+  .season-tasks {
+    list-style: none;
+    text-align: left;
+    background: #1a0a0e;
+    border: 1px solid #2d1520;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .season-tasks li {
+    font-size: 12px;
+    color: #ccc;
+    padding: 3px 0;
+    line-height: 1.5;
+  }
+  .season-tasks li::before {
+    content: '>';
+    color: #555;
+    margin-right: 6px;
+    font-family: monospace;
+  }
+
+  /* ========== NPC BUYERS TABLE ========== */
+  .buyers-section { padding: 60px 24px; }
+  .buyers-table-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow-x: auto;
+  }
+  table.buyers {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.buyers thead th {
+    background: #1a0a12;
+    color: #c9b037;
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 2px solid #c9b037;
+    white-space: nowrap;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  table.buyers tbody tr {
+    border-bottom: 1px solid #2d1520;
+  }
+  table.buyers tbody tr:hover {
+    background: #1a0a12;
+  }
+  table.buyers td {
+    padding: 14px 16px;
+    vertical-align: middle;
+  }
+  .buyer-type {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+  .buyer-price { font-family: monospace; color: #50c878; }
+  .buyer-volume { font-family: monospace; color: #7b9ed9; }
+  .buyer-trait { font-size: 12px; color: #ccc; }
+  .buyers-link {
+    text-align: center;
+    margin-top: 20px;
+  }
+  .buyers-link a {
+    color: #c9b037;
+    font-size: 13px;
+    text-decoration: none;
+    border-bottom: 1px dotted #c9b037;
+    padding-bottom: 2px;
+    transition: opacity 0.2s;
+  }
+  .buyers-link a:hover { opacity: 0.7; }
+
+  /* ========== DESIGN SYSTEM ========== */
+  .design-section { padding: 60px 24px; }
+  .design-content {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .palette-group {
+    margin-bottom: 28px;
+  }
+  .palette-group-label {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 12px;
+  }
+  .palette-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .swatch {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #1a0a0e;
+    border: 1px solid #2d1520;
+    border-radius: 8px;
+    padding: 10px 16px 10px 10px;
+    min-width: 200px;
+  }
+  .swatch-color {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    border: 1px solid #3a1a28;
+  }
+  .swatch-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .swatch-name {
+    font-size: 13px;
+    color: #f0e0c0;
+    font-weight: 600;
+  }
+  .swatch-hex {
+    font-size: 11px;
+    color: #888;
+    font-family: monospace;
+  }
+  .font-showcase {
+    margin-top: 28px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .font-card {
+    background: #1a0a0e;
+    border: 1px solid #2d1520;
+    border-radius: 8px;
+    padding: 20px 24px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .font-card-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  .font-card-name {
+    font-size: 20px;
+    color: #f0e0c0;
+    margin-bottom: 4px;
+  }
+  .font-card-desc {
+    font-size: 12px;
+    color: #666;
+  }
+
+  /* ========== ROADMAP ========== */
+  .roadmap-section { padding: 60px 24px; }
+  .roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .roadmap-card {
+    background: #1a0a0e;
+    border: 1px solid #2d1520;
+    border-radius: 10px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .roadmap-card:hover {
+    border-color: #c9b037;
+    transform: translateY(-2px);
+  }
+  .roadmap-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #722f37, #c9b037);
+    opacity: 0.6;
+  }
+  .roadmap-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: #c9b03718;
+    color: #c9b037;
+    border: 1px solid #c9b03733;
+    margin-bottom: 14px;
+  }
+  .roadmap-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .roadmap-card h3 {
+    font-size: 17px;
+    color: #f0e0c0;
+    margin-bottom: 8px;
+  }
+  .roadmap-card p {
+    font-size: 13px;
+    color: #999;
+    line-height: 1.6;
+  }
+
+  /* ========== PROGRESS ========== */
+  .progress-section { padding: 60px 24px; }
+  .progress-list {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .progress-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .progress-label {
+    font-size: 14px;
+    color: #e8d5b7;
+    min-width: 180px;
+    text-align: right;
+  }
+  .progress-bar-wrap {
+    flex: 1;
+    background: #1a0a12;
+    border-radius: 6px;
+    height: 10px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #2d1520;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 1s ease;
+    position: relative;
+  }
+  .progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 2px; height: 100%;
+    background: rgba(255,255,255,0.3);
+    border-radius: 0 6px 6px 0;
+  }
+  .progress-pct {
+    font-size: 13px;
+    font-family: monospace;
+    color: #c9b037;
+    min-width: 40px;
+    text-align: right;
+  }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    border-top: 1px solid #2d1520;
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .footer-links a {
+    color: #c9b037;
+    text-decoration: none;
+    font-size: 13px;
+    border-bottom: 1px dotted #c9b03766;
+    padding-bottom: 2px;
+    transition: opacity 0.2s;
+  }
+  .footer-links a:hover { opacity: 0.7; }
+  .footer-copy {
+    font-size: 11px;
+    color: #555;
+    margin-top: 16px;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    .hero { padding: 48px 16px 40px; }
+    .hero-meta { gap: 20px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .season-timeline {
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .season-timeline::before { display: none; }
+    .season-dot { margin-top: 0; }
+    .progress-item { flex-direction: column; align-items: stretch; gap: 6px; }
+    .progress-label { text-align: left; min-width: auto; }
+    table.buyers { font-size: 12px; }
+    table.buyers td, table.buyers th { padding: 10px 10px; }
+  }
+
+  @media (max-width: 480px) {
+    .season-timeline { grid-template-columns: 1fr; }
+    .swatch { min-width: 160px; }
+    .hero h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="lang-toggle">
+  <button data-set-lang="en" class="active">EN</button>
+  <button data-set-lang="ko">KO</button>
+</div>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+  <div class="hero-eyebrow"><span data-lang="en">A Bordeaux Winemaking Simulation</span><span data-lang="ko">보르도 와인메이킹 시뮬레이션</span></div>
+  <h1>Grand Cru: The Winemaker</h1>
+  <p class="hero-subtitle"><span data-lang="en">A winemaker's journey begins in Bordeaux</span><span data-lang="ko">보르도에서 시작되는 와인 메이커의 여정</span></p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Platform</span>
+      <span class="hero-meta-value">Steam / PC</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Target</span>
+      <span class="hero-meta-value">Early Access 2026</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Price</span>
+      <span class="hero-meta-value price">$9.99</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Genre</span>
+      <span class="hero-meta-value">Simulation / Tycoon</span>
+    </div>
+  </div>
+  <div class="hero-genre">
+    <span class="genre-tag"><span data-lang="en">Management Sim</span><span data-lang="ko">경영 시뮬레이션</span></span>
+    <span class="genre-tag"><span data-lang="en">Winemaking</span><span data-lang="ko">와인 양조</span></span>
+    <span class="genre-tag"><span data-lang="en">Bordeaux</span><span data-lang="ko">보르도</span></span>
+    <span class="genre-tag"><span data-lang="en">NPC Negotiation</span><span data-lang="ko">NPC 협상</span></span>
+    <span class="genre-tag"><span data-lang="en">Story Events</span><span data-lang="ko">스토리 이벤트</span></span>
+  </div>
+</section>
+
+<!-- ==================== FEATURES ==================== -->
+<section class="features-section">
+  <div class="section-header">
+    <h2><span data-lang="en">Core Features</span><span data-lang="ko">핵심 특징</span></h2>
+    <div class="subtitle"><span data-lang="en">6 pillars of Grand Cru gameplay</span><span data-lang="ko">Core Features</span></div>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">&#x1F347;</span>
+      <h3><span data-lang="en">Vineyard Management</span><span data-lang="ko">포도원 관리</span></h3>
+      <p><span data-lang="en">Grow 6 Bordeaux grape varieties. Manage soil conditions, climate changes, and seasonal tasks (pruning, canopy, harvest) to cultivate the finest grapes. Check weather forecasts and prepare for frost and pests.</span><span data-lang="ko">6종의 보르도 품종을 재배하세요. 토양 상태, 기후 변화, 시즌별 작업(전지, 캐노피, 수확)을 직접 관리하며 최적의 포도를 키워냅니다. 기상 예보를 확인하고, 서리와 병충해에 대비하세요.</span></p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">&#x1F377;</span>
+      <h3><span data-lang="en">Winery System</span><span data-lang="ko">양조 시스템</span></h3>
+      <p><span data-lang="en">Control fermentation temperature sliders, oak barrel types, and aging duration. Blending ratios completely change your wine's character. Every winery decision affects the final score and price.</span><span data-lang="ko">발효 온도 슬라이더, 오크 배럴 종류, 숙성 기간을 직접 조절하세요. 블렌딩 비율에 따라 와인의 성격이 완전히 달라집니다. 양조 과정의 모든 선택이 최종 점수와 가격에 반영됩니다.</span></p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">&#x1F4B0;</span>
+      <h3><span data-lang="en">Market & Negotiation</span><span data-lang="ko">시장 & 협상</span></h3>
+      <p><span data-lang="en">Negotiate 1-on-1 with 25 unique NPC buyers. Collectors, courtiers, chefs, importers, hypermarkets — each with their own budget, personality, and style preferences. Push the price too high and the deal falls apart.</span><span data-lang="ko">25명의 개성 있는 NPC 바이어와 1:1 협상을 벌이세요. 컬렉터, 꾸르티에, 셰프, 수입상, 대형마트까지 각자의 예산, 성격, 선호 스타일이 다릅니다. 가격을 너무 높이면 거래가 깨집니다.</span></p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">&#x1F4F0;</span>
+      <h3><span data-lang="en">Gazette & Reviews</span><span data-lang="ko">가제트 & 리뷰</span></h3>
+      <p><span data-lang="en">Read wine critic reviews, industry news, and weather forecasts in the seasonal Bordeaux Gazette. High scores elevate your wine's price and reputation.</span><span data-lang="ko">매 시즌 발행되는 <em>Bordeaux Gazette</em>에서 와인 평론가의 리뷰, 업계 뉴스, 날씨 전망을 확인하세요. 높은 평점은 당신의 와인 가격과 평판을 끌어올립니다.</span></p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">&#x1F468;&#x200D;&#x1F373;</span>
+      <h3><span data-lang="en">Chef Contracts</span><span data-lang="ko">셰프 계약</span></h3>
+      <p><span data-lang="en">Sign long-term contracts with Michelin restaurants. Chefs demand specific varieties, vintages, and minimum scores. Fulfill contracts for stable income and bonus reputation.</span><span data-lang="ko">미슐랭 레스토랑과 장기 계약을 맺으세요. 셰프들은 특정 품종, 빈티지, 점수 이상의 와인을 요구합니다. 계약을 이행하면 안정적인 수입과 보너스 평판을 얻습니다.</span></p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">&#x1F4CA;</span>
+      <h3><span data-lang="en">Economy Simulation</span><span data-lang="ko">경제 시뮬레이션</span></h3>
+      <p><span data-lang="en">A realistic economic model based on Bordeaux wine pricing. Manage vineyard maintenance, winery costs, and staff wages as you grow your estate. The reputation system impacts long-term pricing.</span><span data-lang="ko">현실적인 보르도 와인 가격 체계를 기반으로 한 경제 모델. 포도원 유지비, 양조 비용, 직원 인건비를 관리하며 와이너리를 성장시키세요. 평판 시스템이 장기적인 가격에 영향을 줍니다.</span></p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ==================== SEASON CYCLE ==================== -->
+<section class="season-section">
+  <div class="section-header">
+    <h2><span data-lang="en">Season Cycle</span><span data-lang="ko">시즌 사이클</span></h2>
+    <div class="subtitle"><span data-lang="en">1 Year = 4 Seasons, each with key activities</span><span data-lang="ko">Season Cycle &mdash; 1년 = 4시즌, 각 시즌마다 핵심 활동</span></div>
+  </div>
+  <div class="season-timeline">
+    <!-- Spring -->
+    <div class="season-card">
+      <span class="season-emoji">&#x1F331;</span>
+      <div class="season-dot"></div>
+      <div class="season-name">SPRING</div>
+      <div class="season-name-ko">봄 (3~5월)</div>
+      <ul class="season-tasks">
+        <li><span data-lang="en">Plant new grapevines</span><span data-lang="ko">새 포도나무 식재</span></li>
+        <li><span data-lang="en">Pruning</span><span data-lang="ko">전지 작업 (Pruning)</span></li>
+        <li><span data-lang="en">Soil management & fertilizing</span><span data-lang="ko">토양 관리 & 비료</span></li>
+        <li><span data-lang="en">Frost risk preparation</span><span data-lang="ko">서리 위험 대비</span></li>
+        <li><span data-lang="en">Ship previous year's wine</span><span data-lang="ko">전년도 와인 출하</span></li>
+      </ul>
+    </div>
+    <!-- Summer -->
+    <div class="season-card">
+      <span class="season-emoji">&#x2600;&#xFE0F;</span>
+      <div class="season-dot"></div>
+      <div class="season-name">SUMMER</div>
+      <div class="season-name-ko">여름 (6~8월)</div>
+      <ul class="season-tasks">
+        <li><span data-lang="en">Canopy management (Green harvest)</span><span data-lang="ko">캐노피 관리 (Green harvest)</span></li>
+        <li><span data-lang="en">Pest monitoring & control</span><span data-lang="ko">병충해 감시 & 방제</span></li>
+        <li><span data-lang="en">Irrigation decisions</span><span data-lang="ko">관개 결정</span></li>
+        <li><span data-lang="en">Chef contract signing</span><span data-lang="ko">셰프 계약 체결</span></li>
+        <li><span data-lang="en">Gazette summer issue</span><span data-lang="ko">가제트 여름호 발간</span></li>
+      </ul>
+    </div>
+    <!-- Fall -->
+    <div class="season-card">
+      <span class="season-emoji">&#x1F342;</span>
+      <div class="season-dot"></div>
+      <div class="season-name">FALL</div>
+      <div class="season-name-ko">가을 (9~11월)</div>
+      <ul class="season-tasks">
+        <li><span data-lang="en">Harvest timing decisions</span><span data-lang="ko">수확 타이밍 결정</span></li>
+        <li><span data-lang="en">Fermentation (temp/duration)</span><span data-lang="ko">발효 (온도/기간 설정)</span></li>
+        <li><span data-lang="en">Oak barrel selection</span><span data-lang="ko">오크 배럴 선택</span></li>
+        <li><span data-lang="en">Blending & winemaking</span><span data-lang="ko">블렌딩 & 양조</span></li>
+        <li><span data-lang="en">Buyer visits & negotiation</span><span data-lang="ko">바이어 방문 & 협상</span></li>
+      </ul>
+    </div>
+    <!-- Winter -->
+    <div class="season-card">
+      <span class="season-emoji">&#x2744;&#xFE0F;</span>
+      <div class="season-dot"></div>
+      <div class="season-name">WINTER</div>
+      <div class="season-name-ko">겨울 (12~2월)</div>
+      <ul class="season-tasks">
+        <li><span data-lang="en">Wine aging management</span><span data-lang="ko">와인 숙성 관리</span></li>
+        <li><span data-lang="en">Annual financial review</span><span data-lang="ko">연간 재무 결산</span></li>
+        <li><span data-lang="en">Critic review announcements</span><span data-lang="ko">평론가 리뷰 발표</span></li>
+        <li><span data-lang="en">Facility upgrades</span><span data-lang="ko">시설 업그레이드</span></li>
+        <li><span data-lang="en">Next year strategy planning</span><span data-lang="ko">다음 해 전략 수립</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ==================== NPC BUYERS ==================== -->
+<section class="buyers-section">
+  <div class="section-header">
+    <h2><span data-lang="en">Buyer Ecosystem</span><span data-lang="ko">바이어 생태계</span></h2>
+    <div class="subtitle"><span data-lang="en">25 NPC Buyers &mdash; 6 Types</span><span data-lang="ko">25명의 NPC 바이어 &mdash; 6가지 유형</span></div>
+  </div>
+  <div class="buyers-table-wrap">
+    <table class="buyers">
+      <thead>
+        <tr>
+          <th><span data-lang="en">Type</span><span data-lang="ko">유형</span></th>
+          <th><span data-lang="en">Count</span><span data-lang="ko">인원</span></th>
+          <th><span data-lang="en">Price/Bottle</span><span data-lang="ko">병당 가격대</span></th>
+          <th><span data-lang="en">Volume</span><span data-lang="ko">거래 물량</span></th>
+          <th><span data-lang="en">Traits</span><span data-lang="ko">특성</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="buyer-type" style="background:#50c87822;color:#50c878;border:1px solid #50c87855">&#x1F3C6; <span data-lang="en">Collector</span><span data-lang="ko">컬렉터</span></span></td>
+          <td><span data-lang="en">3</span><span data-lang="ko">3명</span></td>
+          <td><span class="buyer-price">$80 ~ $1,200</span></td>
+          <td><span class="buyer-volume">20 ~ 100병</span></td>
+          <td><span class="buyer-trait"><span data-lang="en">Highest prices. Small quantities. 90+ scores only. Legendary status.</span><span data-lang="ko">최고 가격. 소량만 구매. 90점 이상, 비평가 점수 기준. 셀러에 들어가면 전설.</span></span></td>
+        </tr>
+        <tr>
+          <td><span class="buyer-type" style="background:#c9b03722;color:#c9b037;border:1px solid #c9b03755">&#x1F4DC; <span data-lang="en">Courtier</span><span data-lang="ko">꾸르티에</span></span></td>
+          <td><span data-lang="en">3</span><span data-lang="ko">3명</span></td>
+          <td><span class="buyer-price">$25 ~ $250</span></td>
+          <td><span class="buyer-volume">120 ~ 600병</span></td>
+          <td><span class="buyer-trait"><span data-lang="en">Bordeaux brokers. N&eacute;gociant families. Large steady volume, master negotiators.</span><span data-lang="ko">보르도 중개인. 네고시앙 가문 출신. 물량 크고 꾸준하지만 깎기의 달인.</span></span></td>
+        </tr>
+        <tr>
+          <td><span class="buyer-type" style="background:#ff7f5022;color:#ff7f50;border:1px solid #ff7f5055">&#x1F468;&#x200D;&#x1F373; <span data-lang="en">Chef</span><span data-lang="ko">셰프</span></span></td>
+          <td><span data-lang="en">7</span><span data-lang="ko">7명</span></td>
+          <td><span class="buyer-price">$15 ~ $150</span></td>
+          <td><span class="buyer-volume">12 ~ 300병</span></td>
+          <td><span class="buyer-trait"><span data-lang="en">Michelin restaurants. Small volume but long-term contracts. Pairing-focused, stable income.</span><span data-lang="ko">미슐랭 레스토랑. 소량이지만 장기 계약 가능. 페어링 중시, 안정적 수익원.</span></span></td>
+        </tr>
+        <tr>
+          <td><span class="buyer-type" style="background:#4a90d922;color:#4a90d9;border:1px solid #4a90d955">&#x1F30D; <span data-lang="en">Importer</span><span data-lang="ko">수입상</span></span></td>
+          <td><span data-lang="en">4</span><span data-lang="ko">4명</span></td>
+          <td><span class="buyer-price">$10 ~ $120</span></td>
+          <td><span class="buyer-volume">300 ~ 5,000병</span></td>
+          <td><span class="buyer-trait"><span data-lang="en">Bulk buyers. US/Korea/Japan markets. Fierce price negotiation. Up to $250K deals.</span><span data-lang="ko">대량 구매. 미국/한국/일본 시장. 가격 협상 치열. 최대 거래액 $250K.</span></span></td>
+        </tr>
+        <tr>
+          <td><span class="buyer-type" style="background:#20b2aa22;color:#20b2aa;border:1px solid #20b2aa55">&#x1F3EA; <span data-lang="en">Hypermarket</span><span data-lang="ko">대형마트</span></span></td>
+          <td><span data-lang="en">2</span><span data-lang="ko">2명</span></td>
+          <td><span class="buyer-price">$5 ~ $22</span></td>
+          <td><span class="buyer-volume">600 ~ 2,500병</span></td>
+          <td><span class="buyer-trait"><span data-lang="en">Lowest prices. Massive volume. Useful for inventory clearing. Value-first.</span><span data-lang="ko">최저 가격. 초대량 물량 소화. 재고 처리에 유용. 가성비 최우선.</span></span></td>
+        </tr>
+        <tr>
+          <td><span class="buyer-type" style="background:#7b68ee22;color:#7b68ee;border:1px solid #7b68ee55">&#x1F6D2; <span data-lang="en">Chain/Outlet</span><span data-lang="ko">체인/아웃렛</span></span></td>
+          <td><span data-lang="en">4</span><span data-lang="ko">4명</span></td>
+          <td><span class="buyer-price">$4 ~ $30</span></td>
+          <td><span class="buyer-volume">300 ~ 1,200병</span></td>
+          <td><span class="buyer-trait"><span data-lang="en">Mass market trend-driven. Aggressive pricing. Safety net for excess stock.</span><span data-lang="ko">대중 시장 트렌드 중시. 공격적 가격 협상. 재고 소진 안전망.</span></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="buyers-link">
+    <a href="real-economy-gold.html"><span data-lang="en">View full 25 NPC Buyer Sheet &rarr;</span><span data-lang="ko">전체 25명 NPC 바이어 상세 시트 보기 &rarr;</span></a>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ==================== DESIGN SYSTEM ==================== -->
+<section class="design-section">
+  <div class="section-header">
+    <h2><span data-lang="en">Design System</span><span data-lang="ko">디자인 시스템</span></h2>
+    <div class="subtitle"><span data-lang="en">Color Palette & Typography</span><span data-lang="ko">Design System &mdash; Color Palette & Typography</span></div>
+  </div>
+  <div class="design-content">
+    <!-- Accent Colors -->
+    <div class="palette-group">
+      <div class="palette-group-label">Accent Colors</div>
+      <div class="palette-row">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#722f37"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">Burgundy</span>
+            <span class="swatch-hex">#722F37</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#c9b037"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">Gold</span>
+            <span class="swatch-hex">#C9B037</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#f5e6d0"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">Cream</span>
+            <span class="swatch-hex">#F5E6D0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Dark Backgrounds -->
+    <div class="palette-group">
+      <div class="palette-group-label">Dark Backgrounds</div>
+      <div class="palette-row">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#0f0608; border-color: #3a1a28;"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">Deepest</span>
+            <span class="swatch-hex">#0F0608</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#1a0a0e"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">Dark Surface</span>
+            <span class="swatch-hex">#1A0A0E</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#2d1520"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">Border</span>
+            <span class="swatch-hex">#2D1520</span>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#3a1a28"></div>
+          <div class="swatch-info">
+            <span class="swatch-name">Elevated</span>
+            <span class="swatch-hex">#3A1A28</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Typography -->
+    <div class="font-showcase">
+      <div class="font-card">
+        <div class="font-card-label">UI Font</div>
+        <div class="font-card-name">Pretendard Variable</div>
+        <div class="font-card-desc"><span data-lang="en">Primary UI font for Korean & English. Variable font optimized for readability.</span><span data-lang="ko">한/영 UI 텍스트 전반. 가독성과 깔끔함에 최적화된 한글 가변 폰트.</span></div>
+      </div>
+      <div class="font-card">
+        <div class="font-card-label">Serif Accent</div>
+        <div class="font-card-name" style="font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic;">Cormorant Garamond</div>
+        <div class="font-card-desc"><span data-lang="en">Classic serif accent for Gazette masthead, wine labels, and elegant elements.</span><span data-lang="ko">가제트 마스트헤드, 와인 라벨 등 클래식한 세리프 강조 요소에 사용.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ==================== ROADMAP ==================== -->
+<section class="roadmap-section">
+  <div class="section-header">
+    <h2><span data-lang="en">Full Release Content</span><span data-lang="ko">정식 버전 예정 콘텐츠</span></h2>
+    <div class="subtitle"><span data-lang="en">Coming after Early Access</span><span data-lang="ko">Full Release Roadmap &mdash; Coming after Early Access</span></div>
+  </div>
+  <div class="roadmap-grid">
+    <div class="roadmap-card">
+      <span class="roadmap-badge">Full Release</span>
+      <span class="roadmap-icon">&#x1F377;</span>
+      <h3><span data-lang="en">Blending System</span><span data-lang="ko">블렌딩 시스템</span></h3>
+      <p><span data-lang="en">Blend Cabernet Sauvignon, Merlot, Cabernet Franc and more to create your signature cuv&eacute;e. Blending ratios dramatically alter structure, aroma, and final score. The essence of Bordeaux assemblage.</span><span data-lang="ko">카베르네 소비뇽, 메를로, 카베르네 프랑 등 복수 품종을 배합하여 나만의 블렌드를 만드세요. 블렌딩 비율에 따라 와인의 구조감, 아로마, 최종 점수가 극적으로 달라집니다. 보르도 전통 어셈블라주의 정수.</span></p>
+    </div>
+    <div class="roadmap-card">
+      <span class="roadmap-badge">Full Release</span>
+      <span class="roadmap-icon">&#x1F91D;</span>
+      <h3><span data-lang="en">NPC Affinity & Events</span><span data-lang="ko">NPC 친밀도 & 이벤트</span></h3>
+      <p><span data-lang="en">Build relationships through repeated trades with buyers, chefs, and courtiers. Each affinity tier unlocks special events — secret cellar invitations, exclusive contract offers, personal favors. Relationships are business.</span><span data-lang="ko">바이어, 셰프, 꾸르티에와의 거래를 반복하며 친밀도를 쌓으세요. 친밀도 단계별로 특별한 이벤트가 발생합니다 — 비밀 셀러 초대, 독점 계약 제안, 개인적인 부탁까지. 관계가 곧 비즈니스입니다.</span></p>
+    </div>
+    <div class="roadmap-card">
+      <span class="roadmap-badge">Full Release</span>
+      <span class="roadmap-icon">&#x1F4D6;</span>
+      <h3><span data-lang="en">Main Story</span><span data-lang="ko">메인 스토리</span></h3>
+      <p><span data-lang="en">Your father's debt and a ruined winery. A journey to restore a legendary vintage. Score above 93 to unlock the true ending — 'This wine is haunted. The son's precision, the father's soul.' Uncover Bordeaux's hidden secrets.</span><span data-lang="ko">아버지가 남긴 빚과 폐허가 된 와이너리. 사라진 전설의 빈티지를 복원하는 여정. 93점을 넘기면 열리는 진짜 엔딩 — "이 와인에는 유령이 깃들어 있다. 아들의 정밀함, 아버지의 영혼." 보르도의 숨겨진 비밀을 파헤치세요.</span></p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ==================== PROGRESS ==================== -->
+<section class="progress-section">
+  <div class="section-header">
+    <h2><span data-lang="en">Development Progress</span><span data-lang="ko">개발 진행률</span></h2>
+    <div class="subtitle"><span data-lang="en">Development Progress</span><span data-lang="ko">Development Progress</span></div>
+  </div>
+  <div class="progress-list">
+    <div class="progress-item">
+      <span class="progress-label">Core Gameplay</span>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width:95%;background:linear-gradient(90deg,#4a7a3a,#50c878)"></div>
+      </div>
+      <span class="progress-pct">95%</span>
+    </div>
+    <div class="progress-item">
+      <span class="progress-label">UI/UX Polish</span>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width:85%;background:linear-gradient(90deg,#c9b037,#f0d060)"></div>
+      </div>
+      <span class="progress-pct">85%</span>
+    </div>
+    <div class="progress-item">
+      <span class="progress-label">Localization (KO/EN)</span>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width:90%;background:linear-gradient(90deg,#4a90d9,#7bb8f0)"></div>
+      </div>
+      <span class="progress-pct">90%</span>
+    </div>
+    <div class="progress-item">
+      <span class="progress-label">Audio (BGM/SFX)</span>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width:80%;background:linear-gradient(90deg,#da70d6,#e8a0e4)"></div>
+      </div>
+      <span class="progress-pct">80%</span>
+    </div>
+    <div class="progress-item">
+      <span class="progress-label">Story Events</span>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width:75%;background:linear-gradient(90deg,#ff7f50,#ffaa80)"></div>
+      </div>
+      <span class="progress-pct">75%</span>
+    </div>
+    <div class="progress-item">
+      <span class="progress-label">Balance Testing</span>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width:70%;background:linear-gradient(90deg,#722f37,#a04050)"></div>
+      </div>
+      <span class="progress-pct">70%</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="real-economy-gold.html"><span data-lang="en">25 Buyer Sheet &rarr;</span><span data-lang="ko">25 바이어 시트 &rarr;</span></a>
+  </div>
+  <div class="footer-copy">
+    &copy; 2026 Grand Cru: The Winemaker &mdash; All rights reserved.
+  </div>
+</footer>
+
+<script>
+(function() {
+  const userLang = (navigator.language || '').toLowerCase();
+  const defaultLang = userLang.startsWith('ko') ? 'ko' : 'en';
+  document.body.classList.add('lang-' + defaultLang);
+  document.querySelectorAll('.lang-toggle button').forEach(b =>
+    b.classList.toggle('active', b.dataset.setLang === defaultLang)
+  );
+  document.querySelector('.lang-toggle').addEventListener('click', e => {
+    if (e.target.tagName !== 'BUTTON') return;
+    const lang = e.target.dataset.setLang;
+    document.body.className = document.body.className.replace(/lang-\w+/g, '') + ' lang-' + lang;
+    document.querySelectorAll('.lang-toggle button').forEach(b => b.classList.toggle('active', b.dataset.setLang === lang));
+  });
+})();
+</script>
+
+</body>
+</html>
