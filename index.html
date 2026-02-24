@@ -563,6 +563,103 @@
     .swatch { min-width: 160px; }
     .hero h1 { font-size: 28px; }
   }
+
+  /* ========== SCREENSHOTS ========== */
+  .screenshots-section { padding: 60px 24px; }
+  .screenshot-hero {
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #2d1520;
+    position: relative;
+    cursor: pointer;
+  }
+  .screenshot-hero img {
+    width: 100%;
+    display: block;
+  }
+  .screenshot-hero .ss-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 16px 20px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.75));
+    font-size: 13px;
+    color: #e8d5b7;
+  }
+  .screenshot-hero .ss-lang-badge {
+    position: absolute;
+    top: 12px; right: 12px;
+  }
+  .ss-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .ss-card {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #2d1520;
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .ss-card:hover {
+    border-color: #c9b037;
+    transform: translateY(-2px);
+  }
+  .ss-card img {
+    width: 100%;
+    display: block;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    background: #1a0a0e;
+  }
+  .ss-caption {
+    padding: 10px 12px;
+    background: #1a0a0e;
+    font-size: 12px;
+    color: #ccc;
+  }
+  .ss-lang-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  .ss-lang-en { background: rgba(74,144,217,0.2); color: #4a90d9; border: 1px solid rgba(74,144,217,0.4); }
+  .ss-lang-ko { background: rgba(201,176,55,0.2); color: #c9b037; border: 1px solid rgba(201,176,55,0.4); }
+
+  /* Lightbox */
+  .ss-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  .ss-lightbox.active { display: flex; }
+  .ss-lightbox img {
+    max-width: 92vw;
+    max-height: 90vh;
+    border-radius: 8px;
+    border: 1px solid #2d1520;
+  }
+
+  @media (max-width: 768px) {
+    .ss-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .ss-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -603,6 +700,95 @@
     <span class="genre-tag"><span data-lang="en">Story Events</span><span data-lang="ko">스토리 이벤트</span></span>
   </div>
 </section>
+
+<!-- ==================== SCREENSHOTS ==================== -->
+<section class="screenshots-section">
+  <div class="section-header">
+    <h2><span data-lang="en">Screenshots</span><span data-lang="ko">게임 스크린샷</span></h2>
+    <div class="subtitle"><span data-lang="en">Actual in-game footage</span><span data-lang="ko">실제 게임 화면</span></div>
+  </div>
+
+  <!-- Hero screenshot -->
+  <div class="screenshot-hero" onclick="openLightbox(this.querySelector('img').src)">
+    <img src="images/screenshots/01-dashboard.png" alt="Dashboard">
+    <span class="ss-lang-badge ss-lang-en">EN</span>
+    <div class="ss-caption"><span data-lang="en">Estate Dashboard &mdash; Manage your ch&acirc;teau from the grand overview</span><span data-lang="ko">와이너리 대시보드 &mdash; 샤토 전경에서 경영 현황을 한눈에</span></div>
+  </div>
+
+  <!-- Grid -->
+  <div class="ss-grid">
+    <div class="ss-card" onclick="openLightbox(this.querySelector('img').src)">
+      <img src="images/screenshots/02-vineyard.png" alt="Vineyard">
+      <div class="ss-caption">
+        <span class="ss-lang-badge ss-lang-ko">KO</span>
+        <span data-lang="en">Vineyard &mdash; Grow 6 Bordeaux varieties</span><span data-lang="ko">포도밭 &mdash; 6종의 보르도 품종 재배</span>
+      </div>
+    </div>
+    <div class="ss-card" onclick="openLightbox(this.querySelector('img').src)">
+      <img src="images/screenshots/03-weather.png" alt="Weather">
+      <div class="ss-caption">
+        <span class="ss-lang-badge ss-lang-en">EN</span>
+        <span data-lang="en">Weather &mdash; Season forecasts shape your strategy</span><span data-lang="ko">날씨 &mdash; 시즌 기상 예보가 전략을 좌우</span>
+      </div>
+    </div>
+    <div class="ss-card" onclick="openLightbox(this.querySelector('img').src)">
+      <img src="images/screenshots/04-harvest.png" alt="Harvest">
+      <div class="ss-caption">
+        <span class="ss-lang-badge ss-lang-en">EN</span>
+        <span data-lang="en">Harvest &mdash; Time your pick for peak quality</span><span data-lang="ko">수확 &mdash; 최적의 타이밍에 포도를 수확</span>
+      </div>
+    </div>
+    <div class="ss-card" onclick="openLightbox(this.querySelector('img').src)">
+      <img src="images/screenshots/05-winemaking.png" alt="Winemaking">
+      <div class="ss-caption">
+        <span class="ss-lang-badge ss-lang-ko">KO</span>
+        <span data-lang="en">Winemaking &mdash; Fermentation sliders &amp; barrel aging</span><span data-lang="ko">양조 &mdash; 발효 온도 슬라이더 &amp; 배럴 숙성</span>
+      </div>
+    </div>
+    <div class="ss-card" onclick="openLightbox(this.querySelector('img').src)">
+      <img src="images/screenshots/06-barrel.png" alt="Barrel">
+      <div class="ss-caption">
+        <span class="ss-lang-badge ss-lang-en">EN</span>
+        <span data-lang="en">Barrels &mdash; American, Hungarian, or French oak</span><span data-lang="ko">배럴 &mdash; 아메리칸, 헝가리안, 프렌치 오크</span>
+      </div>
+    </div>
+    <div class="ss-card" onclick="openLightbox(this.querySelector('img').src)">
+      <img src="images/screenshots/07-wine-profile.png" alt="Wine Profile">
+      <div class="ss-caption">
+        <span class="ss-lang-badge ss-lang-ko">KO</span>
+        <span data-lang="en">Wine Profile &mdash; 4-pillar scoring &amp; radar chart</span><span data-lang="ko">와인 프로필 &mdash; 4필라 점수 &amp; 레이더 차트</span>
+      </div>
+    </div>
+    <div class="ss-card" onclick="openLightbox(this.querySelector('img').src)">
+      <img src="images/screenshots/08-market.png" alt="Market">
+      <div class="ss-caption">
+        <span class="ss-lang-badge ss-lang-en">EN</span>
+        <span data-lang="en">Market &mdash; 1-on-1 negotiation with 25 NPC buyers</span><span data-lang="ko">시장 &mdash; 25명의 NPC 바이어와 1:1 협상</span>
+      </div>
+    </div>
+    <div class="ss-card" onclick="openLightbox(this.querySelector('img').src)">
+      <img src="images/screenshots/09-gazette.png" alt="Gazette">
+      <div class="ss-caption">
+        <span class="ss-lang-badge ss-lang-ko">KO</span>
+        <span data-lang="en">Gazette &mdash; Bordeaux wine industry newspaper</span><span data-lang="ko">가제트 &mdash; 보르도 와인 업계 신문</span>
+      </div>
+    </div>
+    <div class="ss-card" onclick="openLightbox(this.querySelector('img').src)">
+      <img src="images/screenshots/10-award.png" alt="Award Ceremony">
+      <div class="ss-caption">
+        <span class="ss-lang-badge ss-lang-en">EN</span>
+        <span data-lang="en">Awards &mdash; Compete for Gold at regional competitions</span><span data-lang="ko">시상식 &mdash; 지역 대회에서 금상에 도전</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Lightbox overlay -->
+<div class="ss-lightbox" id="ssLightbox" onclick="this.classList.remove('active')">
+  <img id="ssLightboxImg" src="" alt="Screenshot">
+</div>
 
 <!-- ==================== FEATURES ==================== -->
 <section class="features-section">
@@ -977,6 +1163,12 @@
     document.querySelectorAll('.lang-toggle button').forEach(b => b.classList.toggle('active', b.dataset.setLang === lang));
   });
 })();
+
+function openLightbox(src) {
+  var lb = document.getElementById('ssLightbox');
+  lb.innerHTML = '<img src="' + src + '" alt="Screenshot">';
+  lb.classList.add('active');
+}
 </script>
 
 </body>
