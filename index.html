@@ -513,6 +513,64 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     color: #666;
   }
 
+  /* ========== WINE SCORING ========== */
+  .scoring-section { padding: 60px 24px; }
+  .scoring-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .scoring-step {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #2d1520;
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .scoring-step:hover {
+    border-color: #c9b037;
+    transform: translateY(-2px);
+  }
+  .scoring-step img {
+    width: 100%;
+    display: block;
+  }
+  .scoring-step-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 10px 16px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    font-size: 14px;
+    font-weight: 600;
+    color: #c9b037;
+    letter-spacing: 1px;
+  }
+  .scoring-cta {
+    text-align: center;
+    margin-top: 32px;
+  }
+  .scoring-link {
+    display: inline-block;
+    padding: 14px 36px;
+    background: linear-gradient(135deg, rgba(201,176,55,0.15), rgba(201,176,55,0.05));
+    border: 1px solid rgba(201,176,55,0.4);
+    border-radius: 8px;
+    color: #c9b037;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+  }
+  .scoring-link:hover {
+    background: rgba(201,176,55,0.2);
+    border-color: #c9b037;
+    transform: translateY(-1px);
+  }
+
   /* ========== ROADMAP ========== */
   .roadmap-section { padding: 60px 24px; }
   .roadmap-grid {
@@ -992,6 +1050,59 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <img id="ssLightboxImg" src="" alt="Screenshot">
 </div>
 
+<!-- ==================== WINE SCORING PIPELINE ==================== -->
+<section class="scoring-section">
+  <div class="section-header">
+    <h2><span data-lang="en">How Wine Scoring Works</span><span data-lang="ko">와인 점수, 이렇게 결정됩니다</span></h2>
+    <div class="subtitle"><span data-lang="en">From terroir to final verdict &mdash; a 7-step pipeline based on real oenology</span><span data-lang="ko">테루아에서 최종 평가까지 &mdash; 실제 양조학 기반 7단계 파이프라인</span></div>
+  </div>
+  <div class="scoring-preview">
+    <div class="scoring-grid">
+      <div class="scoring-step" onclick="openLightbox(this)">
+        <img loading="lazy" data-lang="en" src="images/infographic/section-1-terroir-en.png" alt="Terroir — soil, drainage, sun exposure shape base grape quality">
+        <img loading="lazy" data-lang="ko" src="images/infographic/section-1-terroir-ko.png" alt="테루아 — 토양, 배수, 일조량이 포도 기본 품질을 결정">
+        <div class="scoring-step-label"><span data-lang="en">1. Terroir</span><span data-lang="ko">1. 테루아</span></div>
+      </div>
+      <div class="scoring-step" onclick="openLightbox(this)">
+        <img loading="lazy" data-lang="en" src="images/infographic/section-2-harvest-en.png" alt="Harvest timing — early, optimal, or late picking affects quality">
+        <img loading="lazy" data-lang="ko" src="images/infographic/section-2-harvest-ko.png" alt="수확 타이밍 — 조기, 최적기, 만기 수확이 품질에 영향">
+        <div class="scoring-step-label"><span data-lang="en">2. Harvest</span><span data-lang="ko">2. 수확</span></div>
+      </div>
+      <div class="scoring-step" onclick="openLightbox(this)">
+        <img loading="lazy" data-lang="en" src="images/infographic/section-3-winery-en.png" alt="Winery — fermentation equipment and slider controls">
+        <img loading="lazy" data-lang="ko" src="images/infographic/section-3-winery-ko.png" alt="양조장 — 발효 설비와 슬라이더 조절">
+        <div class="scoring-step-label"><span data-lang="en">3. Winery</span><span data-lang="ko">3. 양조</span></div>
+      </div>
+      <div class="scoring-step" onclick="openLightbox(this)">
+        <img loading="lazy" data-lang="en" src="images/infographic/section-4-barrels-en.png" alt="Barrel aging — oak types and aging duration">
+        <img loading="lazy" data-lang="ko" src="images/infographic/section-4-barrels-ko.png" alt="숙성 — 오크 종류와 숙성 기간">
+        <div class="scoring-step-label"><span data-lang="en">4. Barrel Aging</span><span data-lang="ko">4. 오크 숙성</span></div>
+      </div>
+      <div class="scoring-step" onclick="openLightbox(this)">
+        <img loading="lazy" data-lang="en" src="images/infographic/section-5-pillars-en.png" alt="4 Pillars — Structure, Typicity, Finish, Complexity">
+        <img loading="lazy" data-lang="ko" src="images/infographic/section-5-pillars-ko.png" alt="4필라 — 구조감, 전형성, 여운, 복합미">
+        <div class="scoring-step-label"><span data-lang="en">5. Four Pillars</span><span data-lang="ko">5. 4필라 평가</span></div>
+      </div>
+      <div class="scoring-step" onclick="openLightbox(this)">
+        <img loading="lazy" data-lang="en" src="images/infographic/section-6-blend-en.png" alt="Blending — combine varietals for synergy bonuses">
+        <img loading="lazy" data-lang="ko" src="images/infographic/section-6-blend-ko.png" alt="블렌딩 — 품종 조합으로 시너지 보너스">
+        <div class="scoring-step-label"><span data-lang="en">6. Blending</span><span data-lang="ko">6. 블렌딩</span></div>
+      </div>
+      <div class="scoring-step" onclick="openLightbox(this)">
+        <img loading="lazy" data-lang="en" src="images/infographic/section-7-verdict-en.png" alt="Final Verdict — critic vs public scoring">
+        <img loading="lazy" data-lang="ko" src="images/infographic/section-7-verdict-ko.png" alt="최종 평점 — 평론가 vs 대중 평가">
+        <div class="scoring-step-label"><span data-lang="en">7. Final Verdict</span><span data-lang="ko">7. 최종 평점</span></div>
+      </div>
+    </div>
+    <div class="scoring-cta">
+      <a data-lang="en" href="wine-scoring-en.html" class="scoring-link">View Full Wine Scoring Pipeline &rarr;</a>
+      <a data-lang="ko" href="wine-scoring-ko.html" class="scoring-link">와인 스코어링 파이프라인 전체 보기 &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
 <!-- ==================== FEATURES ==================== -->
 <section class="features-section">
   <div class="section-header">
@@ -1352,6 +1463,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="footer-links">
     <a href="https://store.steampowered.com/app/4451370/Grand_Cru_The_Wine_Maker/" target="_blank" rel="noopener"><span data-lang="en">Play on Steam &rarr;</span><span data-lang="ko">Steam에서 플레이 &rarr;</span></a>
     <a href="real-economy-gold.html"><span data-lang="en">25 Buyer Sheet &rarr;</span><span data-lang="ko">25 바이어 시트 &rarr;</span></a>
+    <a data-lang="en" href="wine-scoring-en.html">Wine Scoring Pipeline &rarr;</a>
+    <a data-lang="ko" href="wine-scoring-ko.html">와인 스코어링 파이프라인 &rarr;</a>
   </div>
   <div class="footer-copy">
     &copy; 2026 Grand Cru: The Winemaker &mdash; All rights reserved.

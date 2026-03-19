@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=800">
+<title>와인 양조 파이프라인 — Grand Cru: The Winemaker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --burgundy-deep: #1a0a0e;
+    --burgundy-mid: #2d1520;
+    --burgundy-warm: #3a1a28;
+    --burgundy-rich: #5a1f30;
+    --gold: #C9B037;
+    --gold-light: #e8d06a;
+    --gold-dim: #8a7520;
+    --cream: #F5E6D0;
+    --cream-dim: #c4a882;
+    --cream-faint: #7a5c42;
+    --green: #4a7c59;
+    --green-light: #7ab58a;
+    --red-accent: #b03060;
+    --width: 800px;
+  }
+
+  body {
+    width: var(--width);
+    margin: 0 auto;
+    background: var(--burgundy-deep);
+    color: var(--cream);
+    font-family: 'Pretendard Variable', 'Inter', sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ─── OVERRIDE COLORS FOR READABILITY ─────────────────── */
+  :root {
+    --cream-dim: #d4b892;
+    --cream-faint: #a07850;
+    --gold: #e8d06a;
+    --gold-dim: #b09030;
+  }
+
+  /* ─── UTILITIES ───────────────────────────────────────── */
+  .serif { font-family: 'Cormorant Garamond', 'Pretendard Variable', serif; }
+  .gold { color: var(--gold); }
+  .cream-dim { color: var(--cream-dim); }
+  .center { text-align: center; }
+  .italic { font-style: italic; }
+
+  /* ─── SECTION WRAPPER ─────────────────────────────────── */
+  .section {
+    padding: 48px 60px;
+    position: relative;
+  }
+  .section + .section {
+    border-top: 1px solid rgba(201, 176, 55, 0.15);
+  }
+
+  /* ─── SECTION HEADER ──────────────────────────────────── */
+  .section-label {
+    font-family: 'Pretendard Variable', 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', 'Pretendard Variable', serif;
+    font-size: 38px;
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .section-subtitle {
+    font-family: 'Pretendard Variable', serif;
+    font-size: 18px;
+    font-style: normal;
+    color: var(--cream-dim);
+    margin-bottom: 28px;
+  }
+  .section-divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-bottom: 28px;
+  }
+
+  /* ─── CONNECTOR ARROWS ────────────────────────────────── */
+  .connector {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    height: 52px;
+    align-items: center;
+    position: relative;
+  }
+  .connector::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, rgba(232,208,106,0.4), rgba(232,208,106,0.15));
+    transform: translateX(-50%);
+  }
+  .connector-badge {
+    background: var(--burgundy-mid);
+    border: 1.5px solid rgba(232,208,106,0.5);
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 18px;
+    border-radius: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── STEP NUMBER ─────────────────────────────────────── */
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-right: 14px;
+    flex-shrink: 0;
+  }
+
+  /* ─── CARD ────────────────────────────────────────────── */
+  .card {
+    background: linear-gradient(135deg, var(--burgundy-warm), var(--burgundy-mid));
+    border: 1px solid rgba(201,176,55,0.2);
+    border-radius: 12px;
+    padding: 22px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(180deg, var(--gold), transparent);
+    border-radius: 12px 0 0 12px;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', 'Pretendard Variable', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .card-body {
+    font-size: 15px;
+    color: var(--cream-dim);
+    line-height: 1.75;
+  }
+
+  /* ─── GRID ────────────────────────────────────────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+
+  /* ─── REAL PARALLEL BOX ───────────────────────────────── */
+  .parallel-box {
+    background: rgba(201,176,55,0.06);
+    border: 1px solid rgba(201,176,55,0.25);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 24px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .parallel-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .parallel-text {
+    font-family: 'Pretendard Variable', serif;
+    font-size: 15px;
+    color: var(--cream);
+    line-height: 1.75;
+  }
+  .parallel-text strong {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 1: HEADER
+  ═══════════════════════════════════════════════════════ */
+  .header-section {
+    background: linear-gradient(180deg, #0d0509 0%, var(--burgundy-deep) 100%);
+    padding: 64px 60px 52px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-section::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,176,55,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 32px;
+    opacity: 0.6;
+  }
+  .ornament-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    max-width: 180px;
+  }
+  .game-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .header-eyebrow {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 18px;
+  }
+  .header-title {
+    font-family: 'Cormorant Garamond', 'Pretendard Variable', serif;
+    font-size: 56px;
+    font-weight: 300;
+    line-height: 1.12;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .header-title em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .header-desc {
+    font-family: 'Pretendard Variable', serif;
+    font-size: 20px;
+    color: var(--cream-dim);
+    margin-top: 16px;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.75;
+  }
+
+  /* wine glass SVG header */
+  .header-glass {
+    margin: 28px auto 0;
+    opacity: 0.5;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 2: VINEYARD
+  ═══════════════════════════════════════════════════════ */
+  .terroir-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .terroir-card {
+    background: rgba(42, 14, 20, 0.8);
+    border: 1px solid rgba(201,176,55,0.18);
+    border-radius: 10px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+  .terroir-icon {
+    margin: 0 auto 10px;
+    display: block;
+  }
+  .terroir-name {
+    font-family: 'Pretendard Variable', 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+  .terroir-desc {
+    font-size: 14px;
+    color: var(--cream-dim);
+    line-height: 1.7;
+  }
+  .arrow-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .arrow-flow-item {
+    flex: 1;
+    background: var(--burgundy-warm);
+    border: 1px solid rgba(201,176,55,0.2);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    font-family: 'Pretendard Variable', serif;
+    font-size: 15px;
+    color: var(--cream);
+  }
+  .arrow-flow-arrow {
+    color: var(--gold);
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .arrow-flow-result {
+    flex: 1.3;
+    background: linear-gradient(135deg, rgba(90,31,48,0.8), rgba(58,26,40,0.8));
+    border: 1.5px solid rgba(201,176,55,0.4);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .arrow-flow-result .label {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 4px;
+  }
+  .arrow-flow-result .value {
+    font-family: 'Pretendard Variable', 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  /* grape quality visual */
+  .grape-quality-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .grape-quality-item {
+    border-radius: 8px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .gq-poor { background: rgba(60,20,20,0.6); border: 1px solid rgba(180,60,60,0.3); }
+  .gq-good { background: rgba(20,60,30,0.5); border: 1px solid rgba(80,180,100,0.3); }
+  .gq-great { background: rgba(30,40,10,0.5); border: 1px solid rgba(201,176,55,0.4); }
+  .gq-label {
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .gq-poor .gq-label { color: #b06060; }
+  .gq-good .gq-label { color: var(--green-light); }
+  .gq-great .gq-label { color: var(--gold); }
+  .gq-name {
+    font-family: 'Pretendard Variable', 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .gq-desc {
+    font-size: 13px;
+    color: var(--cream-dim);
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 3: HARVEST
+  ═══════════════════════════════════════════════════════ */
+  .harvest-timeline {
+    position: relative;
+    margin: 16px 0 24px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+  }
+  .timeline-track {
+    position: absolute;
+    left: 0; right: 0;
+    height: 14px;
+    border-radius: 7px;
+    background: linear-gradient(90deg,
+      #4a2020 0%,
+      #6b3030 10%,
+      #3a7040 30%,
+      #4a9050 40%,
+      #3a8a45 50%,
+      #5aaa60 55%,
+      #2d7a38 65%,
+      #8a6020 80%,
+      #aa4020 90%,
+      #882010 100%
+    );
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .timeline-sweet {
+    position: absolute;
+    left: 44%; right: 34%;
+    height: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 2px solid var(--gold);
+    border-radius: 4px;
+    background: rgba(201,176,55,0.12);
+  }
+  .timeline-sweet::before {
+    content: '최적 수확 구간';
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .timeline-label {
+    position: absolute;
+    bottom: -6px;
+    font-size: 13px;
+    color: var(--cream-dim);
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+  .harvest-effects {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .harvest-effect {
+    border-radius: 8px;
+    padding: 14px 14px;
+    text-align: center;
+  }
+  .he-early { background: rgba(60,100,80,0.3); border: 1px solid rgba(80,180,100,0.25); }
+  .he-optimal { background: rgba(60,50,10,0.4); border: 1.5px solid rgba(201,176,55,0.5); }
+  .he-late { background: rgba(80,40,10,0.4); border: 1px solid rgba(180,100,40,0.3); }
+  .he-label {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .he-early .he-label { color: var(--green-light); }
+  .he-optimal .he-label { color: var(--gold); }
+  .he-late .he-label { color: #c08040; }
+  .he-title {
+    font-family: 'Pretendard Variable', 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .he-desc { font-size: 13px; color: var(--cream-dim); line-height: 1.7; }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 4: WINERY / FERMENTATION
+  ═══════════════════════════════════════════════════════ */
+  .equipment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .equipment-card {
+    background: var(--burgundy-warm);
+    border: 1px solid rgba(201,176,55,0.15);
+    border-radius: 10px;
+    padding: 18px 16px;
+    text-align: center;
+    position: relative;
+  }
+  .equipment-card.active {
+    border-color: rgba(201,176,55,0.45);
+    background: linear-gradient(135deg, rgba(60,30,40,0.9), var(--burgundy-warm));
+  }
+  .equipment-name {
+    font-family: 'Pretendard Variable', 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-top: 10px;
+    margin-bottom: 6px;
+  }
+  .equipment-desc { font-size: 13px; color: var(--cream-dim); line-height: 1.7; }
+  .precision-bar {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .pb-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201,176,55,0.4);
+    background: transparent;
+  }
+  .pb-dot.filled { background: var(--gold); border-color: var(--gold); }
+
+  .sliders-box {
+    background: rgba(10,4,6,0.5);
+    border: 1px solid rgba(201,176,55,0.15);
+    border-radius: 10px;
+    padding: 20px 22px;
+  }
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .slider-row:last-child { margin-bottom: 0; }
+  .slider-name {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--cream);
+    width: 110px;
+    flex-shrink: 0;
+  }
+  .slider-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    position: relative;
+  }
+  .slider-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+  }
+  .slider-thumb {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--burgundy-deep);
+    box-shadow: 0 0 8px rgba(201,176,55,0.5);
+  }
+  .slider-effect {
+    font-size: 13px;
+    color: var(--cream-dim);
+    width: 140px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 5: BARREL ROOM
+  ═══════════════════════════════════════════════════════ */
+  .barrel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .barrel-card {
+    border-radius: 10px;
+    padding: 18px 14px;
+    text-align: center;
+  }
+  .bc-stainless {
+    background: rgba(30,50,70,0.5);
+    border: 1px solid rgba(100,150,200,0.3);
+  }
+  .bc-american {
+    background: rgba(70,40,10,0.5);
+    border: 1px solid rgba(200,140,60,0.3);
+  }
+  .bc-hungarian {
+    background: rgba(50,30,60,0.5);
+    border: 1px solid rgba(150,100,180,0.3);
+  }
+  .bc-french {
+    background: rgba(40,15,20,0.5);
+    border: 1.5px solid rgba(201,176,55,0.4);
+  }
+  .barrel-type {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    margin-top: 8px;
+  }
+  .bc-stainless .barrel-type { color: #80b0d0; }
+  .bc-american .barrel-type { color: #c89040; }
+  .bc-hungarian .barrel-type { color: #b088c8; }
+  .bc-french .barrel-type { color: var(--gold); }
+  .barrel-flavor {
+    font-family: 'Pretendard Variable', 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .barrel-notes { font-size: 13px; color: var(--cream-dim); line-height: 1.65; }
+  .freshness-dots {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .fd-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .fd-dot.full { background: var(--gold); }
+  .fd-dot.empty { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); }
+
+  .aging-note {
+    background: rgba(201,176,55,0.06);
+    border: 1px solid rgba(201,176,55,0.2);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .aging-note-icon { font-size: 22px; flex-shrink: 0; }
+  .aging-note-text {
+    font-family: 'Pretendard Variable', serif;
+    font-size: 15px;
+    color: var(--cream-dim);
+    line-height: 1.75;
+  }
+  .aging-note-text strong { color: var(--cream); font-weight: 600; }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 6: 4 PILLARS
+  ═══════════════════════════════════════════════════════ */
+  .pillars-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px 1fr;
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 24px;
+  }
+  .pillars-left, .pillars-right {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .pillar-card {
+    background: var(--burgundy-warm);
+    border: 1px solid rgba(201,176,55,0.2);
+    border-radius: 10px;
+    padding: 16px 16px;
+    position: relative;
+  }
+  .pillar-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .pillars-left .pillar-card::after {
+    right: -20px;
+  }
+  .pillars-right .pillar-card::after {
+    left: -20px;
+    background: linear-gradient(270deg, var(--gold), transparent);
+  }
+  .pillar-pct {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--gold-dim);
+    margin-bottom: 4px;
+  }
+  .pillar-name {
+    font-family: 'Pretendard Variable', 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .pillar-tagline {
+    font-family: 'Pretendard Variable', serif;
+    font-size: 14px;
+    color: var(--gold-dim);
+    margin-bottom: 6px;
+  }
+  .pillar-desc { font-size: 13px; color: var(--cream-dim); line-height: 1.7; }
+
+  /* Radar chart */
+  .radar-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 7: BLEND
+  ═══════════════════════════════════════════════════════ */
+  .blend-layout {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .blend-side {
+    background: var(--burgundy-warm);
+    border: 1px solid rgba(201,176,55,0.2);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+  }
+  .blend-operator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .blend-plus {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(201,176,55,0.12);
+    border: 2px solid rgba(201,176,55,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: var(--gold);
+    font-weight: 300;
+  }
+  .blend-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .blend-grape {
+    font-family: 'Pretendard Variable', 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--cream-dim);
+    margin-bottom: 8px;
+  }
+  .blend-traits {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 10px;
+  }
+  .blend-trait {
+    font-size: 14px;
+    color: var(--cream-dim);
+    background: rgba(0,0,0,0.2);
+    border-radius: 4px;
+    padding: 4px 8px;
+  }
+
+  .blend-result {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(80,30,45,0.6), rgba(40,15,25,0.8));
+    border: 1.5px solid rgba(201,176,55,0.4);
+    border-radius: 12px;
+    padding: 20px 24px;
+    text-align: center;
+  }
+  .blend-result-title {
+    font-family: 'Pretendard Variable', 'Cormorant Garamond', serif;
+    font-size: 23px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .blend-result-desc {
+    font-family: 'Pretendard Variable', serif;
+    font-size: 15px;
+    color: var(--cream-dim);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.75;
+  }
+  .blend-synergy {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .synergy-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--cream-dim);
+  }
+  .synergy-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 8: THE VERDICT
+  ═══════════════════════════════════════════════════════ */
+  .verdict-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: stretch;
+    margin-bottom: 24px;
+  }
+  .verdict-card {
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .vc-critic {
+    background: linear-gradient(135deg, rgba(20,20,50,0.7), rgba(30,20,40,0.8));
+    border: 1px solid rgba(100,100,180,0.35);
+  }
+  .vc-public {
+    background: linear-gradient(135deg, rgba(50,20,20,0.7), rgba(40,15,20,0.8));
+    border: 1px solid rgba(180,60,80,0.35);
+  }
+  .verdict-icon {
+    margin: 0 auto 12px;
+    display: block;
+  }
+  .verdict-title {
+    font-family: 'Pretendard Variable', 'Cormorant Garamond', serif;
+    font-size: 23px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+  .verdict-subtitle {
+    font-family: 'Pretendard Variable', serif;
+    font-size: 15px;
+    color: var(--cream-dim);
+    margin-bottom: 14px;
+  }
+  .verdict-rewards {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+    margin-top: 10px;
+  }
+  .verdict-reward {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--cream-dim);
+  }
+  .vr-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .verdict-vs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-style: italic;
+    color: var(--cream-dim);
+    opacity: 0.5;
+    align-self: center;
+  }
+
+  .score-scale {
+    display: flex;
+    align-items: stretch;
+    height: 58px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(201,176,55,0.15);
+    margin-top: 20px;
+  }
+  .score-tier {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .st-ordinary { background: rgba(40,20,20,0.6); }
+  .st-good { background: rgba(30,50,30,0.5); }
+  .st-great { background: rgba(20,40,50,0.5); }
+  .st-exceptional { background: rgba(50,40,10,0.5); }
+  .st-legendary { background: linear-gradient(135deg, rgba(80,60,10,0.7), rgba(50,35,5,0.7)); }
+  .score-tier-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cream);
+  }
+  .score-tier-label {
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    color: var(--cream-dim);
+  }
+  .st-legendary .score-tier-num { color: var(--gold-light); }
+  .st-legendary .score-tier-label { color: var(--gold-dim); }
+
+  /* ═══════════════════════════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════════════════════════ */
+  .footer-section {
+    background: linear-gradient(180deg, var(--burgundy-deep) 0%, #0d0509 100%);
+    padding: 52px 60px 64px;
+    text-align: center;
+    position: relative;
+  }
+  .footer-quote {
+    font-family: 'Pretendard Variable', 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.4;
+    margin-bottom: 24px;
+  }
+  .footer-quote em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .footer-game-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .footer-tagline {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--cream-dim);
+    opacity: 0.6;
+  }
+  .footer-divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto;
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 1: HEADER
+══════════════════════════════════════════════════════ -->
+<div class="header-section">
+  <div class="header-ornament">
+    <div class="ornament-line"></div>
+    <span class="game-logo">Grand Cru: The Winemaker</span>
+    <div class="ornament-line"></div>
+  </div>
+
+  <p class="header-eyebrow">와인은 이렇게 만들어진다</p>
+  <h1 class="header-title">포도밭에서 <em>한 잔의 와인</em>까지</h1>
+  <p class="header-desc">흙, 날씨, 타이밍, 장인의 감각 — 수십 가지 선택이 모여 한 병의 와인이 된다.</p>
+
+  <!-- wine glass SVG -->
+  <svg class="header-glass" width="60" height="90" viewBox="0 0 60 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="30" cy="28" rx="22" ry="24" fill="rgba(122,40,60,0.4)" stroke="rgba(201,176,55,0.5)" stroke-width="1.5"/>
+    <ellipse cx="30" cy="28" rx="22" ry="24" fill="none" stroke="rgba(201,176,55,0.25)" stroke-width="1.5"/>
+    <!-- wine level -->
+    <ellipse cx="30" cy="40" rx="18" ry="5" fill="rgba(140,30,50,0.5)"/>
+    <!-- stem -->
+    <line x1="30" y1="52" x2="30" y2="76" stroke="rgba(201,176,55,0.4)" stroke-width="2"/>
+    <!-- base -->
+    <ellipse cx="30" cy="78" rx="14" ry="4" fill="none" stroke="rgba(201,176,55,0.35)" stroke-width="1.5"/>
+    <!-- light reflection -->
+    <path d="M 16 18 Q 20 14 25 16" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">1단계</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 2: THE VINEYARD
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">1단계 — 기반</p>
+  <h2 class="section-title">포도밭</h2>
+  <p class="section-subtitle">좋은 와인은 결국 흙과 날씨에서 시작된다</p>
+  <div class="section-divider"></div>
+
+  <!-- Three pillars of terroir -->
+  <div class="terroir-grid">
+
+    <div class="terroir-card">
+      <!-- Soil SVG -->
+      <svg width="44" height="44" viewBox="0 0 44 44" class="terroir-icon">
+        <rect x="4" y="26" width="36" height="14" rx="3" fill="rgba(100,65,30,0.5)" stroke="rgba(180,120,60,0.4)" stroke-width="1.5"/>
+        <rect x="4" y="18" width="36" height="10" rx="2" fill="rgba(130,85,40,0.4)" stroke="rgba(160,100,50,0.3)" stroke-width="1"/>
+        <rect x="8" y="14" width="28" height="6" rx="2" fill="rgba(160,110,55,0.3)" stroke="rgba(140,90,45,0.3)" stroke-width="1"/>
+        <!-- stones -->
+        <ellipse cx="14" cy="30" rx="4" ry="2.5" fill="rgba(200,170,120,0.4)"/>
+        <ellipse cx="28" cy="33" rx="3" ry="2" fill="rgba(200,170,120,0.35)"/>
+        <ellipse cx="22" cy="28" rx="2" ry="1.5" fill="rgba(200,170,120,0.3)"/>
+        <!-- roots -->
+        <line x1="22" y1="14" x2="18" y2="8" stroke="rgba(120,80,40,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="22" y1="14" x2="26" y2="6" stroke="rgba(120,80,40,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="22" y1="14" x2="22" y2="5" stroke="rgba(120,80,40,0.6)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="terroir-name">토양과 지질</div>
+      <div class="terroir-desc">점토, 석회암, 자갈 — 흙 종류에 따라 포도 맛이 달라지고, 물 빠짐도 달라진다</div>
+    </div>
+
+    <div class="terroir-card">
+      <!-- Climate SVG -->
+      <svg width="44" height="44" viewBox="0 0 44 44" class="terroir-icon">
+        <!-- sun rays -->
+        <circle cx="22" cy="20" r="8" fill="rgba(220,180,60,0.3)" stroke="rgba(220,180,60,0.5)" stroke-width="1.5"/>
+        <line x1="22" y1="6" x2="22" y2="10" stroke="rgba(220,180,60,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="22" y1="30" x2="22" y2="34" stroke="rgba(220,180,60,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="20" x2="12" y2="20" stroke="rgba(220,180,60,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="32" y1="20" x2="36" y2="20" stroke="rgba(220,180,60,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="11" y1="9" x2="14" y2="12" stroke="rgba(220,180,60,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="30" y1="28" x2="33" y2="31" stroke="rgba(220,180,60,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="33" y1="9" x2="30" y2="12" stroke="rgba(220,180,60,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="11" y1="31" x2="14" y2="28" stroke="rgba(220,180,60,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- rain drops -->
+        <ellipse cx="16" cy="38" rx="2" ry="3" fill="rgba(100,160,220,0.5)" stroke="rgba(100,160,220,0.4)" stroke-width="1"/>
+        <ellipse cx="22" cy="40" rx="2" ry="3" fill="rgba(100,160,220,0.4)" stroke="rgba(100,160,220,0.3)" stroke-width="1"/>
+        <ellipse cx="28" cy="38" rx="2" ry="3" fill="rgba(100,160,220,0.5)" stroke="rgba(100,160,220,0.4)" stroke-width="1"/>
+      </svg>
+      <div class="terroir-name">기후와 날씨</div>
+      <div class="terroir-desc">비, 더위, 서리 — 해마다 날씨가 다르니까, 같은 밭에서도 매년 다른 와인이 나온다</div>
+    </div>
+
+    <div class="terroir-card">
+      <!-- Vine age SVG -->
+      <svg width="44" height="44" viewBox="0 0 44 44" class="terroir-icon">
+        <!-- old thick vine trunk -->
+        <path d="M 22 40 Q 20 30 22 20 Q 24 10 22 6" stroke="rgba(120,80,40,0.7)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <!-- branches -->
+        <path d="M 22 20 Q 14 16 10 12" stroke="rgba(120,80,40,0.5)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M 22 24 Q 30 20 34 16" stroke="rgba(120,80,40,0.5)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M 22 14 Q 16 10 14 6" stroke="rgba(120,80,40,0.4)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M 22 14 Q 28 9 30 6" stroke="rgba(120,80,40,0.4)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- grape cluster -->
+        <circle cx="10" cy="11" r="3" fill="rgba(120,40,80,0.6)"/>
+        <circle cx="14" cy="8" r="2.5" fill="rgba(130,45,85,0.6)"/>
+        <circle cx="34" cy="15" r="3" fill="rgba(120,40,80,0.6)"/>
+        <circle cx="30" cy="12" r="2.5" fill="rgba(130,45,85,0.6)"/>
+        <!-- age rings hinting -->
+        <path d="M 20 38 Q 18 34 20 30" stroke="rgba(160,110,60,0.3)" stroke-width="1" fill="none"/>
+      </svg>
+      <div class="terroir-name">수령(樹齡)</div>
+      <div class="terroir-desc">오래된 나무일수록 열매는 적지만 맛이 진하다. 젊은 나무는 생기 있는 맛, 늙은 나무는 깊은 맛</div>
+    </div>
+
+  </div>
+
+  <!-- Arrow flow: conditions → result -->
+  <div class="arrow-flow">
+    <div class="arrow-flow-item">토양<br>구성</div>
+    <div class="arrow-flow-arrow">+</div>
+    <div class="arrow-flow-item">시즌<br>날씨</div>
+    <div class="arrow-flow-arrow">+</div>
+    <div class="arrow-flow-item">포도나무<br>수령</div>
+    <div class="arrow-flow-arrow">→</div>
+    <div class="arrow-flow-result">
+      <div class="label">결정</div>
+      <div class="value">포도 잠재력</div>
+    </div>
+  </div>
+
+  <!-- Real parallel -->
+  <div class="parallel-box">
+    <div class="parallel-icon">🍷</div>
+    <div class="parallel-text">같은 Merlot 포도라도, <strong>포므롤의 철분 섞인 점토</strong>에서 자라면 진하고 묵직한 와인이 되고, 마르고의 자갈밭에서 자라면 완전히 다른 와인이 된다. 땅이 곧 와인의 개성이다.</div>
+  </div>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">2단계</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 3: THE HARVEST
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">2단계 — 타이밍</p>
+  <h2 class="section-title">수확</h2>
+  <p class="section-subtitle">언제 딸 것인가 — 와인메이커의 첫 번째 큰 결정</p>
+  <div class="section-divider"></div>
+
+  <!-- Timeline -->
+  <div class="harvest-timeline">
+    <div class="timeline-track"></div>
+    <div class="timeline-sweet"></div>
+    <div class="timeline-label" style="left:5%">너무 이른</div>
+    <div class="timeline-label" style="left:30%">이른 수확</div>
+    <div class="timeline-label" style="left:70%">늦은 수확</div>
+    <div class="timeline-label" style="left:95%">너무 늦음</div>
+  </div>
+
+  <div class="harvest-effects">
+    <div class="harvest-effect he-early">
+      <div class="he-label">이른 수확</div>
+      <div class="he-title">상큼 &amp; 풋풋함</div>
+      <div class="he-desc">신맛 강하고 알코올은 낮다. 상큼한 향이 살아 있다. 백포도 품종은 일찍 따는 게 유리할 때도</div>
+    </div>
+    <div class="harvest-effect he-optimal">
+      <div class="he-label">최적 구간</div>
+      <div class="he-title">균형 &amp; 깊이</div>
+      <div class="he-desc">단맛과 신맛의 완벽한 균형. 포도가 충분히 익은 상태. 모든 양조가가 노리는 황금 타이밍</div>
+    </div>
+    <div class="harvest-effect he-late">
+      <div class="he-label">늦은 수확</div>
+      <div class="he-title">진하고 과숙됨</div>
+      <div class="he-desc">잼처럼 진한 맛, 알코올도 높다. 너무 늦으면 상큼함이 사라질 위험. 달달한 와인에는 적합</div>
+    </div>
+  </div>
+
+  <div class="parallel-box" style="margin-top:20px">
+    <div class="parallel-icon">📅</div>
+    <div class="parallel-text"><strong>Château Pétrus</strong>에선 수확 타이밍이 오후 하나 차이로 갈린다. 비 온다? 지금 당장 따. 맑은 날이 더 있다? 기다려. 이 하루의 판단이 그해 와인의 운명을 결정한다.</div>
+  </div>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">3단계</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 4: THE WINERY — FERMENTATION
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">3단계 — 변환</p>
+  <h2 class="section-title">양조장</h2>
+  <p class="section-subtitle">포도가 와인이 되는 곳 — 장비와 감각이 만나는 현장</p>
+  <div class="section-divider"></div>
+
+  <!-- Equipment progression -->
+  <div class="equipment-grid">
+    <!-- Basic tank -->
+    <div class="equipment-card">
+      <svg width="50" height="60" viewBox="0 0 50 60" fill="none">
+        <!-- basic tank -->
+        <rect x="10" y="8" width="30" height="40" rx="4" fill="rgba(60,30,40,0.6)" stroke="rgba(150,100,80,0.4)" stroke-width="1.5"/>
+        <rect x="14" y="12" width="22" height="28" rx="2" fill="rgba(100,40,50,0.3)"/>
+        <!-- wooden bands -->
+        <rect x="8" y="18" width="34" height="3" rx="1" fill="rgba(130,90,50,0.5)" stroke="rgba(160,110,60,0.3)" stroke-width="0.5"/>
+        <rect x="8" y="32" width="34" height="3" rx="1" fill="rgba(130,90,50,0.5)" stroke="rgba(160,110,60,0.3)" stroke-width="0.5"/>
+        <!-- valve -->
+        <circle cx="25" cy="53" r="4" fill="rgba(100,70,50,0.5)" stroke="rgba(150,100,60,0.4)" stroke-width="1"/>
+        <line x1="25" y1="48" x2="25" y2="57" stroke="rgba(150,100,60,0.4)" stroke-width="1"/>
+      </svg>
+      <div class="equipment-name">기본 발효조</div>
+      <div class="equipment-desc">나무통 발효. 온도 조절이 어렵지만, 투박한 매력이 있다.</div>
+      <div class="precision-bar">
+        <div class="pb-dot filled"></div>
+        <div class="pb-dot"></div>
+        <div class="pb-dot"></div>
+        <div class="pb-dot"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:6px;letter-spacing:0.05em">정밀도</div>
+    </div>
+    <!-- Cooling tank -->
+    <div class="equipment-card active">
+      <svg width="50" height="60" viewBox="0 0 50 60" fill="none">
+        <!-- stainless tank body -->
+        <rect x="8" y="6" width="34" height="44" rx="5" fill="rgba(30,50,70,0.5)" stroke="rgba(80,140,200,0.4)" stroke-width="1.5"/>
+        <rect x="12" y="10" width="26" height="32" rx="3" fill="rgba(40,100,160,0.15)"/>
+        <!-- cooling coils -->
+        <path d="M 16 20 Q 34 18 34 24 Q 34 30 16 28 Q 16 34 34 32" stroke="rgba(100,180,220,0.5)" stroke-width="1.5" fill="none"/>
+        <!-- thermometer -->
+        <rect x="39" y="14" width="4" height="18" rx="2" fill="rgba(60,120,180,0.4)" stroke="rgba(100,160,220,0.4)" stroke-width="1"/>
+        <circle cx="41" cy="34" r="4" fill="rgba(100,160,220,0.5)" stroke="rgba(120,180,240,0.4)" stroke-width="1"/>
+        <!-- valve -->
+        <circle cx="25" cy="55" r="4" fill="rgba(60,100,140,0.5)" stroke="rgba(80,140,200,0.4)" stroke-width="1"/>
+      </svg>
+      <div class="equipment-name">냉각 탱크</div>
+      <div class="equipment-desc">온도를 조절하면서 발효. 향이 더 잘 살아남고, 깔끔한 맛.</div>
+      <div class="precision-bar">
+        <div class="pb-dot filled"></div>
+        <div class="pb-dot filled"></div>
+        <div class="pb-dot"></div>
+        <div class="pb-dot"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:6px;letter-spacing:0.05em">정밀도</div>
+    </div>
+    <!-- Precision tank -->
+    <div class="equipment-card">
+      <svg width="50" height="60" viewBox="0 0 50 60" fill="none">
+        <!-- premium tank -->
+        <rect x="6" y="4" width="36" height="46" rx="6" fill="rgba(20,40,30,0.5)" stroke="rgba(201,176,55,0.5)" stroke-width="1.5"/>
+        <rect x="10" y="8" width="28" height="34" rx="4" fill="rgba(40,80,50,0.15)"/>
+        <!-- advanced readings -->
+        <rect x="14" y="44" width="20" height="8" rx="2" fill="rgba(20,50,30,0.7)" stroke="rgba(201,176,55,0.3)" stroke-width="0.5"/>
+        <rect x="16" y="45.5" width="5" height="1" rx="0.5" fill="rgba(201,176,55,0.6)"/>
+        <rect x="22" y="45.5" width="3" height="1" rx="0.5" fill="rgba(100,200,120,0.5)"/>
+        <!-- precision coils -->
+        <path d="M 12 18 Q 36 16 36 22 Q 36 26 12 24" stroke="rgba(201,176,55,0.4)" stroke-width="1.5" fill="none"/>
+        <path d="M 12 28 Q 36 26 36 32 Q 36 36 12 34" stroke="rgba(201,176,55,0.35)" stroke-width="1.5" fill="none"/>
+        <!-- glow -->
+        <rect x="6" y="4" width="36" height="46" rx="6" fill="none" stroke="rgba(201,176,55,0.15)" stroke-width="3"/>
+      </svg>
+      <div class="equipment-name">정밀 제어 시스템</div>
+      <div class="equipment-desc">온도, 습도 등 완전 자동 관리. 최고급 와인을 만들 수 있다.</div>
+      <div class="precision-bar">
+        <div class="pb-dot filled"></div>
+        <div class="pb-dot filled"></div>
+        <div class="pb-dot filled"></div>
+        <div class="pb-dot filled"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:6px;letter-spacing:0.05em">정밀도</div>
+    </div>
+  </div>
+
+  <!-- Sliders -->
+  <div class="sliders-box">
+    <div style="font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:16px">발효 조절 — 슬라이더를 직접 움직여 와인 스타일을 결정한다</div>
+
+    <div class="slider-row">
+      <div class="slider-name">온도</div>
+      <div class="slider-track">
+        <div class="slider-fill" style="width:60%"></div>
+        <div class="slider-thumb" style="left:60%"></div>
+      </div>
+      <div class="slider-effect">과일향 vs. 떫은맛</div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-name">담금 시간</div>
+      <div class="slider-track">
+        <div class="slider-fill" style="width:75%"></div>
+        <div class="slider-thumb" style="left:75%"></div>
+      </div>
+      <div class="slider-effect">색 진하기 &amp; 맛의 깊이</div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-name">압착 타이밍</div>
+      <div class="slider-track">
+        <div class="slider-fill" style="width:45%"></div>
+        <div class="slider-thumb" style="left:45%"></div>
+      </div>
+      <div class="slider-effect">가벼운 맛 vs. 묵직한 맛</div>
+    </div>
+  </div>
+
+  <div class="parallel-box" style="margin-top:20px">
+    <div class="parallel-icon">⚗️</div>
+    <div class="parallel-text"><strong>Domaine de la Romanée-Conti</strong>에서는 발효 온도를 매 시간 확인한다. 겨우 몇 도 차이로 <strong>부드러운 와인이냐, 단단한 와인이냐</strong>가 갈린다. 게임 속 슬라이더 하나하나가 실제 양조가의 고민을 담고 있다.</div>
+  </div>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">4단계</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 5: THE BARREL ROOM
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">4단계 — 숙성</p>
+  <h2 class="section-title">오크통 숙성실</h2>
+  <p class="section-subtitle">어떤 통에 넣느냐에 따라 와인의 향과 맛이 확 달라진다</p>
+  <div class="section-divider"></div>
+
+  <div class="barrel-grid">
+
+    <!-- Stainless -->
+    <div class="barrel-card bc-stainless">
+      <svg width="46" height="52" viewBox="0 0 46 52" fill="none">
+        <rect x="8" y="4" width="30" height="40" rx="5" fill="rgba(30,60,80,0.5)" stroke="rgba(80,150,200,0.5)" stroke-width="1.5"/>
+        <rect x="8" y="4" width="30" height="40" rx="5" fill="none" stroke="rgba(140,200,240,0.2)" stroke-width="3"/>
+        <line x1="8" y1="16" x2="38" y2="16" stroke="rgba(80,150,200,0.3)" stroke-width="1"/>
+        <line x1="8" y1="30" x2="38" y2="30" stroke="rgba(80,150,200,0.3)" stroke-width="1"/>
+        <circle cx="23" cy="47" r="3" fill="rgba(60,110,150,0.5)" stroke="rgba(80,150,200,0.4)" stroke-width="1"/>
+        <!-- sheen -->
+        <rect x="11" y="7" width="6" height="18" rx="3" fill="rgba(200,230,255,0.08)"/>
+      </svg>
+      <div class="barrel-type">스테인리스</div>
+      <div class="barrel-flavor">순수한 과실미</div>
+      <div class="barrel-notes">나무 맛 안 섞임. 포도 본연의 과일향과 신선함 유지. 화이트 와인에 딱 맞다.</div>
+      <div class="freshness-dots">
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:4px;letter-spacing:0.05em">신선도</div>
+    </div>
+
+    <!-- American Oak -->
+    <div class="barrel-card bc-american">
+      <svg width="46" height="52" viewBox="0 0 46 52" fill="none">
+        <!-- barrel shape -->
+        <path d="M 14 4 Q 8 12 8 24 Q 8 36 14 44 L 32 44 Q 38 36 38 24 Q 38 12 32 4 Z" fill="rgba(80,50,15,0.5)" stroke="rgba(200,140,60,0.5)" stroke-width="1.5"/>
+        <!-- bands -->
+        <path d="M 9 18 Q 23 14 37 18" stroke="rgba(160,100,40,0.6)" stroke-width="2" fill="none"/>
+        <path d="M 9 30 Q 23 34 37 30" stroke="rgba(160,100,40,0.6)" stroke-width="2" fill="none"/>
+        <!-- grain lines -->
+        <line x1="16" y1="8" x2="16" y2="40" stroke="rgba(160,110,50,0.2)" stroke-width="0.5"/>
+        <line x1="23" y1="6" x2="23" y2="42" stroke="rgba(160,110,50,0.2)" stroke-width="0.5"/>
+        <line x1="30" y1="8" x2="30" y2="40" stroke="rgba(160,110,50,0.2)" stroke-width="0.5"/>
+        <!-- bung -->
+        <ellipse cx="23" cy="24" rx="4" ry="3" fill="rgba(140,90,40,0.6)" stroke="rgba(180,120,50,0.4)" stroke-width="1"/>
+      </svg>
+      <div class="barrel-type">아메리칸 오크</div>
+      <div class="barrel-flavor">바닐라 &amp; 코코넛</div>
+      <div class="barrel-notes">달콤하고 진한 나무향. 나뭇결이 넓어서 향이 빨리 배어든다. 진한 레드 와인에 잘 맞는다.</div>
+      <div class="freshness-dots">
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot empty"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:4px;letter-spacing:0.05em">신선도</div>
+    </div>
+
+    <!-- Hungarian Oak -->
+    <div class="barrel-card bc-hungarian">
+      <svg width="46" height="52" viewBox="0 0 46 52" fill="none">
+        <path d="M 14 4 Q 8 12 8 24 Q 8 36 14 44 L 32 44 Q 38 36 38 24 Q 38 12 32 4 Z" fill="rgba(55,30,70,0.5)" stroke="rgba(150,100,190,0.5)" stroke-width="1.5"/>
+        <path d="M 9 18 Q 23 14 37 18" stroke="rgba(120,80,160,0.5)" stroke-width="2" fill="none"/>
+        <path d="M 9 30 Q 23 34 37 30" stroke="rgba(120,80,160,0.5)" stroke-width="2" fill="none"/>
+        <line x1="16" y1="8" x2="16" y2="40" stroke="rgba(120,80,140,0.2)" stroke-width="0.5"/>
+        <line x1="23" y1="6" x2="23" y2="42" stroke="rgba(120,80,140,0.2)" stroke-width="0.5"/>
+        <line x1="30" y1="8" x2="30" y2="40" stroke="rgba(120,80,140,0.2)" stroke-width="0.5"/>
+        <ellipse cx="23" cy="24" rx="4" ry="3" fill="rgba(100,60,130,0.6)" stroke="rgba(150,100,180,0.4)" stroke-width="1"/>
+        <!-- decorative hungarian pattern hint -->
+        <path d="M 14 24 Q 18 20 23 24 Q 28 28 32 24" stroke="rgba(150,100,180,0.2)" stroke-width="1" fill="none"/>
+      </svg>
+      <div class="barrel-type">헝가리안 오크</div>
+      <div class="barrel-flavor">향신료 &amp; 뼈대</div>
+      <div class="barrel-notes">아메리칸보다 결이 촘촘해서 향이 은근하게 스며든다. 과하지 않은 균형 잡힌 선택.</div>
+      <div class="freshness-dots">
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot empty"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:4px;letter-spacing:0.05em">신선도</div>
+    </div>
+
+    <!-- French Oak -->
+    <div class="barrel-card bc-french">
+      <svg width="46" height="52" viewBox="0 0 46 52" fill="none">
+        <path d="M 14 4 Q 8 12 8 24 Q 8 36 14 44 L 32 44 Q 38 36 38 24 Q 38 12 32 4 Z" fill="rgba(50,30,10,0.6)" stroke="rgba(201,176,55,0.6)" stroke-width="1.5"/>
+        <!-- gold shimmer glow -->
+        <path d="M 14 4 Q 8 12 8 24 Q 8 36 14 44 L 32 44 Q 38 36 38 24 Q 38 12 32 4 Z" fill="none" stroke="rgba(201,176,55,0.15)" stroke-width="4"/>
+        <path d="M 9 18 Q 23 14 37 18" stroke="rgba(201,176,55,0.5)" stroke-width="2" fill="none"/>
+        <path d="M 9 30 Q 23 34 37 30" stroke="rgba(201,176,55,0.5)" stroke-width="2" fill="none"/>
+        <line x1="16" y1="8" x2="16" y2="40" stroke="rgba(180,150,60,0.15)" stroke-width="0.5"/>
+        <line x1="23" y1="6" x2="23" y2="42" stroke="rgba(180,150,60,0.15)" stroke-width="0.5"/>
+        <line x1="30" y1="8" x2="30" y2="40" stroke="rgba(180,150,60,0.15)" stroke-width="0.5"/>
+        <ellipse cx="23" cy="24" rx="4" ry="3" fill="rgba(160,130,40,0.5)" stroke="rgba(201,176,55,0.5)" stroke-width="1"/>
+      </svg>
+      <div class="barrel-type">프렌치 오크</div>
+      <div class="barrel-flavor">토스트 &amp; 비단결</div>
+      <div class="barrel-notes">최고급 통. 결이 가장 촘촘해서 향이 섬세하게 배어든다. 진한 레드엔 최고지만, 가벼운 품종엔 오히려 독.</div>
+      <div class="freshness-dots">
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot empty"></div>
+        <div class="fd-dot empty"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:4px;letter-spacing:0.05em">신선도</div>
+    </div>
+
+  </div>
+
+  <!-- Aging note -->
+  <div class="aging-note">
+    <div class="aging-note-icon">⏳</div>
+    <div class="aging-note-text">
+      통에서 오래 묵히면 맛은 깊어지지만, <strong>신선함은 점점 사라진다.</strong> 너무 오래 넣어두면 아무리 좋은 와인도 생기를 잃는다. 언제 꺼낼지 아는 게 실력이다.
+    </div>
+  </div>
+
+  <div class="parallel-box" style="margin-top:16px">
+    <div class="parallel-icon">🪵</div>
+    <div class="parallel-text">보르도 최고급 와이너리들은 <strong>새 프렌치 오크통</strong>에서 18~24개월 숙성한다. 하지만 가벼운 와인을 같은 통에 넣으면 나무향에 묻혀버린다. <strong>어떤 통에 어떤 와인을 넣을지</strong> — 이게 양조의 핵심 고민이다.</div>
+  </div>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">5단계</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 6: THE 4 PILLARS
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">5단계 — 평가</p>
+  <h2 class="section-title">와인 품질의 4가지 기둥</h2>
+  <p class="section-subtitle">와인을 평가하는 네 가지 기준 — 게임에서도, 현실에서도</p>
+  <div class="section-divider"></div>
+
+  <div class="pillars-layout">
+    <!-- Left pillars -->
+    <div class="pillars-left">
+      <div class="pillar-card">
+        <div class="pillar-pct">30% 비중</div>
+        <div class="pillar-name">구조감</div>
+        <div class="pillar-tagline">"와인의 뼈대"</div>
+        <div class="pillar-desc">떫은맛, 신맛, 알코올의 균형. 포도 품종, 발효 온도, 오크통이 결정한다. 이게 탄탄해야 오래 숙성할 수 있다.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-pct">20% 비중</div>
+        <div class="pillar-name">전형성</div>
+        <div class="pillar-tagline">"이 지역다운 맛"</div>
+        <div class="pillar-desc">그 동네 와인다운 맛이 나는가? 토양, 품종, 지역 특성이 잘 살아 있는지. "이건 보르도 맛이다"라고 느껴지는 것.</div>
+      </div>
+    </div>
+
+    <!-- Radar chart center -->
+    <div class="radar-wrap">
+      <svg width="320" height="320" viewBox="-20 -10 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background circles -->
+        <circle cx="140" cy="140" r="110" stroke="rgba(201,176,55,0.08)" stroke-width="1"/>
+        <circle cx="140" cy="140" r="82" stroke="rgba(201,176,55,0.08)" stroke-width="1"/>
+        <circle cx="140" cy="140" r="55" stroke="rgba(201,176,55,0.08)" stroke-width="1"/>
+        <circle cx="140" cy="140" r="27" stroke="rgba(201,176,55,0.08)" stroke-width="1"/>
+
+        <!-- Axis lines (4 axes: top, right, bottom, left) -->
+        <line x1="140" y1="30" x2="140" y2="250" stroke="rgba(201,176,55,0.12)" stroke-width="1"/>
+        <line x1="30" y1="140" x2="250" y2="140" stroke="rgba(201,176,55,0.12)" stroke-width="1"/>
+
+        <!-- Wine shape — a stylized quad polygon -->
+        <polygon
+          points="140,55 241,140 140,210 82,140"
+          fill="rgba(140,30,50,0.35)"
+          stroke="rgba(201,176,55,0.7)"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
+
+        <!-- Axis endpoint dots -->
+        <circle cx="140" cy="30" r="4" fill="rgba(201,176,55,0.6)"/>
+        <circle cx="250" cy="140" r="4" fill="rgba(201,176,55,0.6)"/>
+        <circle cx="140" cy="250" r="4" fill="rgba(201,176,55,0.6)"/>
+        <circle cx="30" cy="140" r="4" fill="rgba(201,176,55,0.6)"/>
+
+        <!-- Data point dots on polygon -->
+        <circle cx="140" cy="55" r="5" fill="var(--gold)" opacity="0.9"/>
+        <circle cx="241" cy="140" r="5" fill="var(--gold)" opacity="0.9"/>
+        <circle cx="140" cy="210" r="5" fill="var(--gold)" opacity="0.9"/>
+        <circle cx="82" cy="140" r="5" fill="var(--gold)" opacity="0.9"/>
+
+        <!-- Center glow -->
+        <circle cx="140" cy="140" r="8" fill="rgba(201,176,55,0.15)"/>
+        <circle cx="140" cy="140" r="4" fill="rgba(201,176,55,0.4)"/>
+
+        <!-- Axis labels (Korean) -->
+        <text x="140" y="8" fill="rgba(201,176,55,0.8)" font-family="Pretendard Variable, sans-serif" font-size="15" font-weight="600" text-anchor="middle">구조감</text>
+        <text x="270" y="145" fill="rgba(201,176,55,0.8)" font-family="Pretendard Variable, sans-serif" font-size="15" font-weight="600" text-anchor="start">여운</text>
+        <text x="140" y="278" fill="rgba(201,176,55,0.8)" font-family="Pretendard Variable, sans-serif" font-size="15" font-weight="600" text-anchor="middle">전형성</text>
+        <text x="10" y="145" fill="rgba(201,176,55,0.8)" font-family="Pretendard Variable, sans-serif" font-size="15" font-weight="600" text-anchor="end">복합성</text>
+      </svg>
+    </div>
+
+    <!-- Right pillars -->
+    <div class="pillars-right">
+      <div class="pillar-card">
+        <div class="pillar-pct">25% 비중</div>
+        <div class="pillar-name">여운</div>
+        <div class="pillar-tagline">"마지막 인상"</div>
+        <div class="pillar-desc">삼킨 뒤에도 맛이 얼마나 오래 남는가? 숙성 기간과 오크통이 결정한다. 최고급 와인은 여운이 몇 분씩 간다.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-pct">25% 비중</div>
+        <div class="pillar-name">복합성</div>
+        <div class="pillar-tagline">"맛이 겹겹이 쌓인 것"</div>
+        <div class="pillar-desc">과일향, 발효에서 오는 향, 숙성에서 오는 향이 겹겹이 쌓인다. 블렌딩과 오래된 나무가 맛의 깊이를 더한다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="parallel-box">
+    <div class="parallel-icon">🎓</div>
+    <div class="parallel-text"><strong>Wine Spectator, 로버트 파커</strong> 같은 유명 와인 평론가들도 실제로 이 네 가지를 본다. 뼈대가 튼튼한지, 그 지역다운 맛인지, 여운이 긴지, 맛의 층이 풍부한지 — 이 기준으로 점수를 매긴다.</div>
+  </div>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">6단계</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 7: THE BLEND
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">6단계 — 선택적 숙련</p>
+  <h2 class="section-title">블렌딩 — 품종 섞기</h2>
+  <p class="section-subtitle">서로 다른 포도를 섞어 더 좋은 와인을 만든다</p>
+  <div class="section-divider"></div>
+
+  <div class="blend-layout">
+
+    <!-- Left: Merlot -->
+    <div class="blend-side">
+      <svg width="50" height="60" viewBox="0 0 50 60" fill="none">
+        <!-- grape cluster red/purple -->
+        <circle cx="25" cy="16" r="7" fill="rgba(120,40,80,0.6)" stroke="rgba(160,60,100,0.5)" stroke-width="1.5"/>
+        <circle cx="16" cy="24" r="7" fill="rgba(110,35,75,0.6)" stroke="rgba(150,55,95,0.5)" stroke-width="1.5"/>
+        <circle cx="34" cy="24" r="7" fill="rgba(115,38,78,0.6)" stroke="rgba(155,58,98,0.5)" stroke-width="1.5"/>
+        <circle cx="25" cy="32" r="7" fill="rgba(120,40,80,0.6)" stroke="rgba(160,60,100,0.5)" stroke-width="1.5"/>
+        <circle cx="12" cy="33" r="6" fill="rgba(105,32,72,0.5)" stroke="rgba(145,52,92,0.4)" stroke-width="1"/>
+        <circle cx="38" cy="33" r="6" fill="rgba(105,32,72,0.5)" stroke="rgba(145,52,92,0.4)" stroke-width="1"/>
+        <!-- stem -->
+        <line x1="25" y1="8" x2="25" y2="2" stroke="rgba(100,70,40,0.6)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="25" y1="4" x2="18" y2="1" stroke="rgba(100,70,40,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="blend-label" style="color:#c06080">70%</div>
+      <div class="blend-grape">Merlot</div>
+      <div class="blend-traits">
+        <div class="blend-trait">자두 &amp; 체리 과실미</div>
+        <div class="blend-trait">부드럽고 둥근 떫은맛</div>
+        <div class="blend-trait">빨리 마실 수 있는 와인</div>
+      </div>
+    </div>
+
+    <div class="blend-operator">
+      <div class="blend-plus">+</div>
+      <div style="font-family:'Pretendard Variable',sans-serif;font-size:15px;color:var(--cream-dim);text-align:center;margin-top:4px">블렌딩</div>
+    </div>
+
+    <!-- Right: Cab Franc -->
+    <div class="blend-side">
+      <svg width="50" height="60" viewBox="0 0 50 60" fill="none">
+        <!-- grape cluster darker/bluer -->
+        <circle cx="25" cy="16" r="7" fill="rgba(60,30,100,0.6)" stroke="rgba(90,50,150,0.5)" stroke-width="1.5"/>
+        <circle cx="16" cy="24" r="7" fill="rgba(55,28,95,0.6)" stroke="rgba(85,48,145,0.5)" stroke-width="1.5"/>
+        <circle cx="34" cy="24" r="7" fill="rgba(58,29,98,0.6)" stroke="rgba(88,49,148,0.5)" stroke-width="1.5"/>
+        <circle cx="25" cy="32" r="7" fill="rgba(60,30,100,0.6)" stroke="rgba(90,50,150,0.5)" stroke-width="1.5"/>
+        <circle cx="12" cy="33" r="6" fill="rgba(50,25,88,0.5)" stroke="rgba(80,45,135,0.4)" stroke-width="1"/>
+        <circle cx="38" cy="33" r="6" fill="rgba(50,25,88,0.5)" stroke="rgba(80,45,135,0.4)" stroke-width="1"/>
+        <line x1="25" y1="8" x2="25" y2="2" stroke="rgba(100,70,40,0.6)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="25" y1="4" x2="18" y2="1" stroke="rgba(100,70,40,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="blend-label" style="color:#8060c0">30%</div>
+      <div class="blend-grape">Cabernet Franc</div>
+      <div class="blend-traits">
+        <div class="blend-trait">연필심 &amp; 향신료 향</div>
+        <div class="blend-trait">단단하고 쫀쫀한 떫은맛</div>
+        <div class="blend-trait">화려하게 올라오는 향</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Result -->
+  <div class="blend-result">
+    <div class="blend-result-title">1 + 1 = 3이 되는 마법</div>
+    <div class="blend-result-desc">Merlot의 부드러움이 Franc의 단단함을 감싸주고, Franc의 화려한 향이 Merlot의 깊은 맛을 끌어올린다. 각각보다 섞었을 때 더 좋은 와인이 된다.</div>
+    <div class="blend-synergy">
+      <div class="synergy-item">
+        <div class="synergy-dot" style="background:rgba(201,176,55,0.8)"></div>
+        <span>구조감 보너스</span>
+      </div>
+      <div class="synergy-item">
+        <div class="synergy-dot" style="background:rgba(100,180,120,0.8)"></div>
+        <span>복합성 상승</span>
+      </div>
+      <div class="synergy-item">
+        <div class="synergy-dot" style="background:rgba(160,100,200,0.8)"></div>
+        <span>향 시너지</span>
+      </div>
+      <div class="synergy-item">
+        <div class="synergy-dot" style="background:rgba(200,120,60,0.8)"></div>
+        <span>여운 연장</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="parallel-box" style="margin-top:16px">
+    <div class="parallel-icon">🧪</div>
+    <div class="parallel-text"><strong>Château Pétrus</strong>는 Merlot 거의 100%. <strong>Cheval Blanc</strong>은 Cabernet Franc 위주로 섞는다. 둘 다 한 병에 수백만 원인데, 레시피가 완전히 다르다. 정답은 없다 — 게임에서도 직접 찾아야 한다.</div>
+  </div>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">최종 단계</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 8: THE VERDICT
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">최종 단계 — 시장</p>
+  <h2 class="section-title">평가</h2>
+  <p class="section-subtitle">전문가와 일반인, 둘 다 잡아야 성공한다</p>
+  <div class="section-divider"></div>
+
+  <div class="verdict-grid">
+
+    <!-- Critic -->
+    <div class="verdict-card vc-critic">
+      <!-- monocle face SVG -->
+      <svg width="56" height="56" viewBox="0 0 56 56" class="verdict-icon">
+        <!-- head -->
+        <circle cx="28" cy="24" r="18" fill="rgba(30,30,60,0.5)" stroke="rgba(100,100,180,0.5)" stroke-width="1.5"/>
+        <!-- monocle -->
+        <circle cx="36" cy="22" r="8" fill="none" stroke="rgba(201,176,55,0.7)" stroke-width="2"/>
+        <line x1="44" y1="28" x2="48" y2="34" stroke="rgba(201,176,55,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- eye left (normal) -->
+        <ellipse cx="20" cy="22" rx="3" ry="2.5" fill="rgba(200,200,240,0.7)"/>
+        <circle cx="20" cy="22" r="1.5" fill="rgba(40,40,80,0.9)"/>
+        <!-- eye right (through monocle) -->
+        <ellipse cx="36" cy="22" rx="3" ry="2.5" fill="rgba(200,200,240,0.7)"/>
+        <circle cx="36" cy="22" r="1.5" fill="rgba(40,40,80,0.9)"/>
+        <!-- mustache -->
+        <path d="M 22 30 Q 24 27 28 29 Q 32 31 34 28" stroke="rgba(180,160,120,0.6)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- hat brim -->
+        <rect x="10" y="6" width="36" height="4" rx="2" fill="rgba(40,40,70,0.6)" stroke="rgba(80,80,120,0.3)" stroke-width="1"/>
+        <!-- tasting glass -->
+        <path d="M 28 44 Q 24 52 32 52" stroke="rgba(100,100,180,0.4)" stroke-width="1.5" fill="none"/>
+      </svg>
+      <div class="verdict-title">평론가</div>
+      <div class="verdict-subtitle">"깊이가 곧 점수"</div>
+      <div style="font-size:15px;color:var(--cream-dim);line-height:1.75;text-align:left;margin-top:8px">
+        전문가는 맛이 복잡하고 여운이 긴 와인을 좋아한다. 까다롭지만 — 높은 점수 하나면 프리미엄 시장의 문이 열린다.
+      </div>
+      <div class="verdict-rewards" style="margin-top:14px">
+        <div class="verdict-reward">
+          <div class="vr-dot" style="background:rgba(100,100,200,0.8)"></div>
+          <span>고득점 시 명성 보너스</span>
+        </div>
+        <div class="verdict-reward">
+          <div class="vr-dot" style="background:rgba(100,100,200,0.8)"></div>
+          <span>고급 바이어에게 팔 수 있게 됨</span>
+        </div>
+        <div class="verdict-reward">
+          <div class="vr-dot" style="background:rgba(100,100,200,0.8)"></div>
+          <span>시상식 참가 자격</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="verdict-vs">vs</div>
+
+    <!-- Public -->
+    <div class="verdict-card vc-public">
+      <!-- happy face with heart -->
+      <svg width="56" height="56" viewBox="0 0 56 56" class="verdict-icon">
+        <circle cx="28" cy="28" r="22" fill="rgba(60,20,25,0.5)" stroke="rgba(180,60,80,0.4)" stroke-width="1.5"/>
+        <!-- eyes -->
+        <circle cx="20" cy="24" r="3.5" fill="rgba(240,180,180,0.8)"/>
+        <circle cx="36" cy="24" r="3.5" fill="rgba(240,180,180,0.8)"/>
+        <circle cx="20" cy="24" r="1.8" fill="rgba(80,30,35,0.9)"/>
+        <circle cx="36" cy="24" r="1.8" fill="rgba(80,30,35,0.9)"/>
+        <!-- smile -->
+        <path d="M 18 34 Q 28 44 38 34" stroke="rgba(240,140,160,0.7)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- heart -->
+        <path d="M 28 14 C 24 10 18 12 18 17 C 18 21 22 25 28 30 C 34 25 38 21 38 17 C 38 12 32 10 28 14 Z" fill="rgba(200,50,70,0.4)" stroke="rgba(200,50,70,0.5)" stroke-width="1"/>
+      </svg>
+      <div class="verdict-title">대중</div>
+      <div class="verdict-subtitle">"맛있으면 장땡"</div>
+      <div style="font-size:15px;color:var(--cream-dim);line-height:1.75;text-align:left;margin-top:8px">
+        대중은 지갑으로 투표한다. 맛있고, 과일향 풍부하고, 가성비 좋으면 된다. 쉽게 마실 수 있는 와인이 10배는 더 팔린다.
+      </div>
+      <div class="verdict-rewards" style="margin-top:14px">
+        <div class="verdict-reward">
+          <div class="vr-dot" style="background:rgba(200,60,80,0.8)"></div>
+          <span>높은 지역 시장 수요</span>
+        </div>
+        <div class="verdict-reward">
+          <div class="vr-dot" style="background:rgba(200,60,80,0.8)"></div>
+          <span>꾸준히 잘 팔리는 수익</span>
+        </div>
+        <div class="verdict-reward">
+          <div class="vr-dot" style="background:rgba(200,60,80,0.8)"></div>
+          <span>셰프 &amp; 레스토랑 납품 기회</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Score Scale -->
+  <div style="margin-top:24px">
+    <div style="font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:12px;text-align:center">점수 스펙트럼</div>
+    <div class="score-scale">
+      <div class="score-tier st-ordinary">
+        <div class="score-tier-num">60–69</div>
+        <div class="score-tier-label">평범</div>
+      </div>
+      <div class="score-tier st-good">
+        <div class="score-tier-num">70–79</div>
+        <div class="score-tier-label">양호</div>
+      </div>
+      <div class="score-tier st-great">
+        <div class="score-tier-num">80–89</div>
+        <div class="score-tier-label">우수</div>
+      </div>
+      <div class="score-tier st-exceptional">
+        <div class="score-tier-num">90–95</div>
+        <div class="score-tier-label">탁월</div>
+      </div>
+      <div class="score-tier st-legendary">
+        <div class="score-tier-num">96–100</div>
+        <div class="score-tier-label">전설적</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="parallel-box" style="margin-top:20px">
+    <div class="parallel-icon">⭐</div>
+    <div class="parallel-text">현실에서도 90점 이상이면 "명품 와인" 취급을 받지만, 가격 착한 78점짜리가 94점 고급 와인보다 더 많이 팔리기도 한다. 비싸다고 잘 팔리는 게 아니다 — 시장은 그렇게 단순하지 않다.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════ -->
+<div class="footer-section">
+
+  <div style="display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:36px;opacity:0.5">
+    <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);max-width:200px"></div>
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="16" r="14" stroke="rgba(201,176,55,0.5)" stroke-width="1.5" fill="none"/>
+      <circle cx="16" cy="11" r="5" fill="rgba(120,40,60,0.5)" stroke="rgba(201,176,55,0.4)" stroke-width="1"/>
+      <circle cx="11" cy="17" r="5" fill="rgba(110,35,55,0.5)" stroke="rgba(201,176,55,0.4)" stroke-width="1"/>
+      <circle cx="21" cy="17" r="5" fill="rgba(115,38,58,0.5)" stroke="rgba(201,176,55,0.4)" stroke-width="1"/>
+    </svg>
+    <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);max-width:200px"></div>
+  </div>
+
+  <p class="footer-quote">"한 병의 와인에는 <em>수십 가지 선택</em>이 담겨 있다."</p>
+  <p style="font-family:'Pretendard Variable',sans-serif;font-size:17px;color:var(--cream-dim);margin-bottom:28px;line-height:1.75">흙에서 잔까지 — 당신이 내린 모든 결정이 와인 한 잔에 녹아든다.</p>
+
+  <div class="footer-divider"></div>
+
+  <div class="footer-game-name">Grand Cru: The Winemaker</div>
+  <div class="footer-tagline">Steam 앞서 해보기 출시 중</div>
+
+  <div style="margin-top:24px;font-size:14px;color:var(--cream-faint);opacity:0.6;letter-spacing:0.03em">
+    와인 양조 경영 시뮬레이션 — 직접 키우고, 만들고, 팔아보자.
+  </div>
+
+</div>
+
+</body>
+</html>
