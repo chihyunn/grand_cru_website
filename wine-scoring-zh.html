@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=800">
+<title>酿酒评分流程图 — Grand Cru: The Winemaker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --burgundy-deep: #1a0a0e;
+    --burgundy-mid: #2d1520;
+    --burgundy-warm: #3a1a28;
+    --burgundy-rich: #5a1f30;
+    --gold: #C9B037;
+    --gold-light: #e8d06a;
+    --gold-dim: #8a7520;
+    --cream: #F5E6D0;
+    --cream-dim: #d4b892;
+    --cream-faint: #7a5c42;
+    --green: #4a7c59;
+    --green-light: #7ab58a;
+    --red-accent: #b03060;
+    --width: 800px;
+  }
+
+  body {
+    width: var(--width);
+    margin: 0 auto;
+    background: var(--burgundy-deep);
+    color: var(--cream);
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Inter', sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ─── UTILITIES ───────────────────────────────────────── */
+  .serif { font-family: 'Cormorant Garamond', serif; }
+  .gold { color: var(--gold); }
+  .cream-dim { color: var(--cream-dim); }
+  .center { text-align: center; }
+  .italic { font-style: italic; }
+
+  /* ─── SECTION WRAPPER ─────────────────────────────────── */
+  .section {
+    padding: 48px 60px;
+    position: relative;
+  }
+  .section + .section {
+    border-top: 1px solid rgba(201, 176, 55, 0.15);
+  }
+
+  /* ─── SECTION HEADER ──────────────────────────────────── */
+  .section-label {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .section-subtitle {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Inter', sans-serif;
+    font-size: 17px;
+    font-style: italic;
+    color: var(--cream-dim);
+    margin-bottom: 28px;
+  }
+  .section-divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-bottom: 28px;
+  }
+
+  /* ─── CONNECTOR ARROWS ────────────────────────────────── */
+  .connector {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    height: 52px;
+    align-items: center;
+    position: relative;
+  }
+  .connector::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, rgba(201,176,55,0.4), rgba(201,176,55,0.15));
+    transform: translateX(-50%);
+  }
+  .connector-badge {
+    background: var(--burgundy-mid);
+    border: 1.5px solid rgba(201,176,55,0.5);
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 5px 16px;
+    border-radius: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── STEP NUMBER ─────────────────────────────────────── */
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-right: 14px;
+    flex-shrink: 0;
+  }
+
+  /* ─── CARD ────────────────────────────────────────────── */
+  .card {
+    background: linear-gradient(135deg, var(--burgundy-warm), var(--burgundy-mid));
+    border: 1px solid rgba(201,176,55,0.2);
+    border-radius: 12px;
+    padding: 22px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(180deg, var(--gold), transparent);
+    border-radius: 12px 0 0 12px;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .card-body {
+    font-size: 14px;
+    color: var(--cream-dim);
+    line-height: 1.75;
+  }
+
+  /* ─── GRID ────────────────────────────────────────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+
+  /* ─── REAL PARALLEL BOX ───────────────────────────────── */
+  .parallel-box {
+    background: rgba(201,176,55,0.06);
+    border: 1px solid rgba(201,176,55,0.25);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 24px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .parallel-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .parallel-text {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Inter', sans-serif;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--cream-dim);
+    line-height: 1.75;
+  }
+  .parallel-text strong {
+    font-style: normal;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 1: HEADER
+  ═══════════════════════════════════════════════════════ */
+  .header-section {
+    background: linear-gradient(180deg, #0d0509 0%, var(--burgundy-deep) 100%);
+    padding: 64px 60px 52px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-section::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,176,55,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 32px;
+    opacity: 0.6;
+  }
+  .ornament-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    max-width: 180px;
+  }
+  .game-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .header-eyebrow {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    color: var(--gold-dim);
+    margin-bottom: 18px;
+  }
+  .header-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px;
+    font-weight: 300;
+    line-height: 1.08;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .header-title em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .header-desc {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Inter', sans-serif;
+    font-size: 19px;
+    font-style: italic;
+    color: var(--cream-dim);
+    margin-top: 16px;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* wine glass SVG header */
+  .header-glass {
+    margin: 28px auto 0;
+    opacity: 0.5;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 2: VINEYARD
+  ═══════════════════════════════════════════════════════ */
+  .terroir-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .terroir-card {
+    background: rgba(42, 14, 20, 0.8);
+    border: 1px solid rgba(201,176,55,0.18);
+    border-radius: 10px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+  .terroir-icon {
+    margin: 0 auto 10px;
+    display: block;
+  }
+  .terroir-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+  .terroir-desc {
+    font-size: 14px;
+    color: var(--cream-dim);
+    line-height: 1.75;
+  }
+  .arrow-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .arrow-flow-item {
+    flex: 1;
+    background: var(--burgundy-warm);
+    border: 1px solid rgba(201,176,55,0.2);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--cream-dim);
+  }
+  .arrow-flow-arrow {
+    color: var(--gold);
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .arrow-flow-result {
+    flex: 1.3;
+    background: linear-gradient(135deg, rgba(90,31,48,0.8), rgba(58,26,40,0.8));
+    border: 1.5px solid rgba(201,176,55,0.4);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .arrow-flow-result .label {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--gold-dim);
+    margin-bottom: 4px;
+  }
+  .arrow-flow-result .value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  /* grape quality visual */
+  .grape-quality-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .grape-quality-item {
+    border-radius: 8px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .gq-poor { background: rgba(60,20,20,0.6); border: 1px solid rgba(180,60,60,0.3); }
+  .gq-good { background: rgba(20,60,30,0.5); border: 1px solid rgba(80,180,100,0.3); }
+  .gq-great { background: rgba(30,40,10,0.5); border: 1px solid rgba(201,176,55,0.4); }
+  .gq-label {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .gq-poor .gq-label { color: #b06060; }
+  .gq-good .gq-label { color: var(--green-light); }
+  .gq-great .gq-label { color: var(--gold); }
+  .gq-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .gq-desc {
+    font-size: 14px;
+    color: var(--cream-dim);
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 3: HARVEST
+  ═══════════════════════════════════════════════════════ */
+  .harvest-timeline {
+    position: relative;
+    margin: 16px 0 24px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+  }
+  .timeline-track {
+    position: absolute;
+    left: 0; right: 0;
+    height: 14px;
+    border-radius: 7px;
+    background: linear-gradient(90deg,
+      #4a2020 0%,
+      #6b3030 10%,
+      #3a7040 30%,
+      #4a9050 40%,
+      #3a8a45 50%,
+      #5aaa60 55%,
+      #2d7a38 65%,
+      #8a6020 80%,
+      #aa4020 90%,
+      #882010 100%
+    );
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .timeline-sweet {
+    position: absolute;
+    left: 44%; right: 34%;
+    height: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 2px solid var(--gold);
+    border-radius: 4px;
+    background: rgba(201,176,55,0.12);
+  }
+  .timeline-sweet::before {
+    content: '最佳采收窗口';
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .timeline-label {
+    position: absolute;
+    bottom: -6px;
+    font-size: 13px;
+    color: var(--cream-dim);
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+  .harvest-effects {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .harvest-effect {
+    border-radius: 8px;
+    padding: 14px 14px;
+    text-align: center;
+  }
+  .he-early { background: rgba(60,100,80,0.3); border: 1px solid rgba(80,180,100,0.25); }
+  .he-optimal { background: rgba(60,50,10,0.4); border: 1.5px solid rgba(201,176,55,0.5); }
+  .he-late { background: rgba(80,40,10,0.4); border: 1px solid rgba(180,100,40,0.3); }
+  .he-label {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .he-early .he-label { color: var(--green-light); }
+  .he-optimal .he-label { color: var(--gold); }
+  .he-late .he-label { color: #c08040; }
+  .he-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .he-desc { font-size: 14px; color: var(--cream-dim); line-height: 1.75; }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 4: WINERY / FERMENTATION
+  ═══════════════════════════════════════════════════════ */
+  .equipment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .equipment-card {
+    background: var(--burgundy-warm);
+    border: 1px solid rgba(201,176,55,0.15);
+    border-radius: 10px;
+    padding: 18px 16px;
+    text-align: center;
+    position: relative;
+  }
+  .equipment-card.active {
+    border-color: rgba(201,176,55,0.45);
+    background: linear-gradient(135deg, rgba(60,30,40,0.9), var(--burgundy-warm));
+  }
+  .equipment-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-top: 10px;
+    margin-bottom: 6px;
+  }
+  .equipment-desc { font-size: 14px; color: var(--cream-dim); line-height: 1.75; }
+  .precision-bar {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .pb-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201,176,55,0.4);
+    background: transparent;
+  }
+  .pb-dot.filled { background: var(--gold); border-color: var(--gold); }
+
+  .sliders-box {
+    background: rgba(10,4,6,0.5);
+    border: 1px solid rgba(201,176,55,0.15);
+    border-radius: 10px;
+    padding: 20px 22px;
+  }
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .slider-row:last-child { margin-bottom: 0; }
+  .slider-name {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--cream-dim);
+    width: 100px;
+    flex-shrink: 0;
+  }
+  .slider-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    position: relative;
+  }
+  .slider-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+  }
+  .slider-thumb {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--burgundy-deep);
+    box-shadow: 0 0 8px rgba(201,176,55,0.5);
+  }
+  .slider-effect {
+    font-size: 13px;
+    color: var(--cream-dim);
+    width: 130px;
+    flex-shrink: 0;
+    text-align: right;
+    font-style: italic;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 5: BARREL ROOM
+  ═══════════════════════════════════════════════════════ */
+  .barrel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .barrel-card {
+    border-radius: 10px;
+    padding: 18px 14px;
+    text-align: center;
+  }
+  .bc-stainless {
+    background: rgba(30,50,70,0.5);
+    border: 1px solid rgba(100,150,200,0.3);
+  }
+  .bc-american {
+    background: rgba(70,40,10,0.5);
+    border: 1px solid rgba(200,140,60,0.3);
+  }
+  .bc-hungarian {
+    background: rgba(50,30,60,0.5);
+    border: 1px solid rgba(150,100,180,0.3);
+  }
+  .bc-french {
+    background: rgba(40,15,20,0.5);
+    border: 1.5px solid rgba(201,176,55,0.4);
+  }
+  .barrel-type {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    margin-top: 8px;
+  }
+  .bc-stainless .barrel-type { color: #80b0d0; }
+  .bc-american .barrel-type { color: #c89040; }
+  .bc-hungarian .barrel-type { color: #b088c8; }
+  .bc-french .barrel-type { color: var(--gold); }
+  .barrel-flavor {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .barrel-notes { font-size: 14px; color: var(--cream-dim); line-height: 1.75; }
+  .freshness-dots {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .fd-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .fd-dot.full { background: var(--gold); }
+  .fd-dot.empty { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); }
+
+  .aging-note {
+    background: rgba(201,176,55,0.06);
+    border: 1px solid rgba(201,176,55,0.2);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .aging-note-icon { font-size: 22px; flex-shrink: 0; }
+  .aging-note-text {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Inter', sans-serif;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--cream-dim);
+    line-height: 1.75;
+  }
+  .aging-note-text strong { color: var(--cream); font-style: normal; }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 6: 4 PILLARS
+  ═══════════════════════════════════════════════════════ */
+  .pillars-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px 1fr;
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 24px;
+  }
+  .pillars-left, .pillars-right {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .pillar-card {
+    background: var(--burgundy-warm);
+    border: 1px solid rgba(201,176,55,0.2);
+    border-radius: 10px;
+    padding: 16px 16px;
+    position: relative;
+  }
+  .pillar-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .pillars-left .pillar-card::after {
+    right: -20px;
+  }
+  .pillars-right .pillar-card::after {
+    left: -20px;
+    background: linear-gradient(270deg, var(--gold), transparent);
+  }
+  .pillar-pct {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--gold-dim);
+    margin-bottom: 4px;
+  }
+  .pillar-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .pillar-tagline {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Inter', sans-serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--gold-dim);
+    margin-bottom: 6px;
+  }
+  .pillar-desc { font-size: 14px; color: var(--cream-dim); line-height: 1.75; }
+
+  /* Radar chart */
+  .radar-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 7: BLEND
+  ═══════════════════════════════════════════════════════ */
+  .blend-layout {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .blend-side {
+    background: var(--burgundy-warm);
+    border: 1px solid rgba(201,176,55,0.2);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+  }
+  .blend-operator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .blend-plus {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(201,176,55,0.12);
+    border: 2px solid rgba(201,176,55,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: var(--gold);
+    font-weight: 300;
+  }
+  .blend-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .blend-grape {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--cream-dim);
+    margin-bottom: 8px;
+  }
+  .blend-traits {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 10px;
+  }
+  .blend-trait {
+    font-size: 13px;
+    color: var(--cream-dim);
+    background: rgba(0,0,0,0.2);
+    border-radius: 4px;
+    padding: 3px 8px;
+  }
+
+  .blend-result {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(80,30,45,0.6), rgba(40,15,25,0.8));
+    border: 1.5px solid rgba(201,176,55,0.4);
+    border-radius: 12px;
+    padding: 20px 24px;
+    text-align: center;
+  }
+  .blend-result-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .blend-result-desc {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Inter', sans-serif;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--cream-dim);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .blend-synergy {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .synergy-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--cream-dim);
+  }
+  .synergy-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SECTION 8: THE VERDICT
+  ═══════════════════════════════════════════════════════ */
+  .verdict-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: stretch;
+    margin-bottom: 24px;
+  }
+  .verdict-card {
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .vc-critic {
+    background: linear-gradient(135deg, rgba(20,20,50,0.7), rgba(30,20,40,0.8));
+    border: 1px solid rgba(100,100,180,0.35);
+  }
+  .vc-public {
+    background: linear-gradient(135deg, rgba(50,20,20,0.7), rgba(40,15,20,0.8));
+    border: 1px solid rgba(180,60,80,0.35);
+  }
+  .verdict-icon {
+    margin: 0 auto 12px;
+    display: block;
+  }
+  .verdict-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+  .verdict-subtitle {
+    font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Inter', sans-serif;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--cream-dim);
+    margin-bottom: 14px;
+  }
+  .verdict-rewards {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+    margin-top: 10px;
+  }
+  .verdict-reward {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--cream-dim);
+  }
+  .vr-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .verdict-vs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-style: italic;
+    color: var(--cream-dim);
+    opacity: 0.5;
+    align-self: center;
+  }
+
+  .score-scale {
+    display: flex;
+    align-items: stretch;
+    height: 44px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(201,176,55,0.15);
+    margin-top: 20px;
+  }
+  .score-tier {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .st-ordinary { background: rgba(40,20,20,0.6); }
+  .st-good { background: rgba(30,50,30,0.5); }
+  .st-great { background: rgba(20,40,50,0.5); }
+  .st-exceptional { background: rgba(50,40,10,0.5); }
+  .st-legendary { background: linear-gradient(135deg, rgba(80,60,10,0.7), rgba(50,35,5,0.7)); }
+  .score-tier-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--cream);
+  }
+  .score-tier-label {
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    color: var(--cream-dim);
+  }
+  .st-legendary .score-tier-num { color: var(--gold-light); }
+  .st-legendary .score-tier-label { color: var(--gold-dim); }
+
+  /* ═══════════════════════════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════════════════════════ */
+  .footer-section {
+    background: linear-gradient(180deg, var(--burgundy-deep) 0%, #0d0509 100%);
+    padding: 52px 60px 64px;
+    text-align: center;
+    position: relative;
+  }
+  .footer-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.3;
+    margin-bottom: 24px;
+  }
+  .footer-quote em {
+    color: var(--gold-light);
+  }
+  .footer-game-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .footer-tagline {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--cream-dim);
+    opacity: 0.6;
+  }
+  .footer-divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto;
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 1: HEADER
+══════════════════════════════════════════════════════ -->
+<div class="header-section">
+  <div class="header-ornament">
+    <div class="ornament-line"></div>
+    <span class="game-logo">Grand Cru: The Winemaker</span>
+    <div class="ornament-line"></div>
+  </div>
+
+  <p class="header-eyebrow">游戏机制详解</p>
+  <h1 class="header-title"><em>你的酒</em>，你来酿</h1>
+  <p class="header-desc">从种葡萄到卖酒——每一步都由你决定。你的选择，决定酒的好坏。</p>
+
+  <!-- wine glass SVG -->
+  <svg class="header-glass" width="60" height="90" viewBox="0 0 60 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="30" cy="28" rx="22" ry="24" fill="rgba(122,40,60,0.4)" stroke="rgba(201,176,55,0.5)" stroke-width="1.5"/>
+    <ellipse cx="30" cy="28" rx="22" ry="24" fill="none" stroke="rgba(201,176,55,0.25)" stroke-width="1.5"/>
+    <!-- wine level -->
+    <ellipse cx="30" cy="40" rx="18" ry="5" fill="rgba(140,30,50,0.5)"/>
+    <!-- stem -->
+    <line x1="30" y1="52" x2="30" y2="76" stroke="rgba(201,176,55,0.4)" stroke-width="2"/>
+    <!-- base -->
+    <ellipse cx="30" cy="78" rx="14" ry="4" fill="none" stroke="rgba(201,176,55,0.35)" stroke-width="1.5"/>
+    <!-- light reflection -->
+    <path d="M 16 18 Q 20 14 25 16" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">第一步</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 2: THE VINEYARD
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">第一步 — 根基</p>
+  <h2 class="section-title">葡萄园</h2>
+  <p class="section-subtitle">好酒的起点，是脚下这片土地</p>
+  <div class="section-divider"></div>
+
+  <!-- Three pillars of terroir -->
+  <div class="terroir-grid">
+
+    <div class="terroir-card">
+      <!-- Soil SVG -->
+      <svg width="44" height="44" viewBox="0 0 44 44" class="terroir-icon">
+        <rect x="4" y="26" width="36" height="14" rx="3" fill="rgba(100,65,30,0.5)" stroke="rgba(180,120,60,0.4)" stroke-width="1.5"/>
+        <rect x="4" y="18" width="36" height="10" rx="2" fill="rgba(130,85,40,0.4)" stroke="rgba(160,100,50,0.3)" stroke-width="1"/>
+        <rect x="8" y="14" width="28" height="6" rx="2" fill="rgba(160,110,55,0.3)" stroke="rgba(140,90,45,0.3)" stroke-width="1"/>
+        <!-- stones -->
+        <ellipse cx="14" cy="30" rx="4" ry="2.5" fill="rgba(200,170,120,0.4)"/>
+        <ellipse cx="28" cy="33" rx="3" ry="2" fill="rgba(200,170,120,0.35)"/>
+        <ellipse cx="22" cy="28" rx="2" ry="1.5" fill="rgba(200,170,120,0.3)"/>
+        <!-- roots -->
+        <line x1="22" y1="14" x2="18" y2="8" stroke="rgba(120,80,40,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="22" y1="14" x2="26" y2="6" stroke="rgba(120,80,40,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="22" y1="14" x2="22" y2="5" stroke="rgba(120,80,40,0.6)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="terroir-name">土壤与地质</div>
+      <div class="terroir-desc">黏土、石灰石、砾石——不同的土质组合，决定了葡萄根能喝到多少水、吸到什么养分</div>
+    </div>
+
+    <div class="terroir-card">
+      <!-- Climate SVG -->
+      <svg width="44" height="44" viewBox="0 0 44 44" class="terroir-icon">
+        <!-- sun rays -->
+        <circle cx="22" cy="20" r="8" fill="rgba(220,180,60,0.3)" stroke="rgba(220,180,60,0.5)" stroke-width="1.5"/>
+        <line x1="22" y1="6" x2="22" y2="10" stroke="rgba(220,180,60,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="22" y1="30" x2="22" y2="34" stroke="rgba(220,180,60,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="20" x2="12" y2="20" stroke="rgba(220,180,60,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="32" y1="20" x2="36" y2="20" stroke="rgba(220,180,60,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="11" y1="9" x2="14" y2="12" stroke="rgba(220,180,60,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="30" y1="28" x2="33" y2="31" stroke="rgba(220,180,60,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="33" y1="9" x2="30" y2="12" stroke="rgba(220,180,60,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="11" y1="31" x2="14" y2="28" stroke="rgba(220,180,60,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- rain drops -->
+        <ellipse cx="16" cy="38" rx="2" ry="3" fill="rgba(100,160,220,0.5)" stroke="rgba(100,160,220,0.4)" stroke-width="1"/>
+        <ellipse cx="22" cy="40" rx="2" ry="3" fill="rgba(100,160,220,0.4)" stroke="rgba(100,160,220,0.3)" stroke-width="1"/>
+        <ellipse cx="28" cy="38" rx="2" ry="3" fill="rgba(100,160,220,0.5)" stroke="rgba(100,160,220,0.4)" stroke-width="1"/>
+      </svg>
+      <div class="terroir-name">气候与天气</div>
+      <div class="terroir-desc">降雨、热浪、霜冻——天气说变就变。夏天够热，单宁才能熟透；春天一场霜冻，整季白干</div>
+    </div>
+
+    <div class="terroir-card">
+      <!-- Vine age SVG -->
+      <svg width="44" height="44" viewBox="0 0 44 44" class="terroir-icon">
+        <!-- old thick vine trunk -->
+        <path d="M 22 40 Q 20 30 22 20 Q 24 10 22 6" stroke="rgba(120,80,40,0.7)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <!-- branches -->
+        <path d="M 22 20 Q 14 16 10 12" stroke="rgba(120,80,40,0.5)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M 22 24 Q 30 20 34 16" stroke="rgba(120,80,40,0.5)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M 22 14 Q 16 10 14 6" stroke="rgba(120,80,40,0.4)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M 22 14 Q 28 9 30 6" stroke="rgba(120,80,40,0.4)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- grape cluster -->
+        <circle cx="10" cy="11" r="3" fill="rgba(120,40,80,0.6)"/>
+        <circle cx="14" cy="8" r="2.5" fill="rgba(130,45,85,0.6)"/>
+        <circle cx="34" cy="15" r="3" fill="rgba(120,40,80,0.6)"/>
+        <circle cx="30" cy="12" r="2.5" fill="rgba(130,45,85,0.6)"/>
+        <!-- age rings hinting -->
+        <path d="M 20 38 Q 18 34 20 30" stroke="rgba(160,110,60,0.3)" stroke-width="1" fill="none"/>
+      </svg>
+      <div class="terroir-name">藤龄</div>
+      <div class="terroir-desc">老藤根扎得深，产量少但葡萄味道浓。年轻的藤活力足；老藤出的酒，味道更有深度</div>
+    </div>
+
+  </div>
+
+  <!-- Arrow flow: conditions → result -->
+  <div class="arrow-flow">
+    <div class="arrow-flow-item">土壤<br>构成</div>
+    <div class="arrow-flow-arrow">+</div>
+    <div class="arrow-flow-item">当季<br>天气</div>
+    <div class="arrow-flow-arrow">+</div>
+    <div class="arrow-flow-item">藤<br>龄</div>
+    <div class="arrow-flow-arrow">→</div>
+    <div class="arrow-flow-result">
+      <div class="label">决定</div>
+      <div class="value">葡萄潜力</div>
+    </div>
+  </div>
+
+  <!-- Real parallel -->
+  <div class="parallel-box">
+    <div class="parallel-icon">🍷</div>
+    <div class="parallel-text">就像真实的波尔多——<strong>温暖年份的 Pomerol</strong>，铁质黏土能养出又饱满又圆润的 Merlot。但同一个品种种在玛戈村的砾石地上，味道完全不一样。这就是风土（terroir）的力量。</div>
+  </div>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">第二步</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 3: THE HARVEST
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">第二步 — 时机</p>
+  <h2 class="section-title">采收</h2>
+  <p class="section-subtitle">什么时候摘葡萄？这是你的第一个大决定</p>
+  <div class="section-divider"></div>
+
+  <!-- Timeline -->
+  <div class="harvest-timeline">
+    <div class="timeline-track"></div>
+    <div class="timeline-sweet"></div>
+    <div class="timeline-label" style="left:5%">过早</div>
+    <div class="timeline-label" style="left:30%">偏早</div>
+    <div class="timeline-label" style="left:70%">偏晚</div>
+    <div class="timeline-label" style="left:95%">过晚</div>
+  </div>
+
+  <div class="harvest-effects">
+    <div class="harvest-effect he-early">
+      <div class="he-label">提前采收</div>
+      <div class="he-title">清爽青涩</div>
+      <div class="he-desc">酸味足，酒精度低，闻起来更清爽。白葡萄早点摘，口感更鲜活</div>
+    </div>
+    <div class="harvest-effect he-optimal">
+      <div class="he-label">最佳窗口</div>
+      <div class="he-title">平衡与复杂度</div>
+      <div class="he-desc">甜度和酸度刚刚好，颜色和口感也到位了。每个酿酒师都在等这个窗口</div>
+    </div>
+    <div class="harvest-effect he-late">
+      <div class="he-label">延迟采收</div>
+      <div class="he-title">浓郁过熟</div>
+      <div class="he-desc">果味很重、酒精度偏高，但可能会过熟发苦。不过有些甜酒，反而就吃这一套</div>
+    </div>
+  </div>
+
+  <div class="parallel-box" style="margin-top:20px">
+    <div class="parallel-icon">📅</div>
+    <div class="parallel-text">在 <strong>Château Pétrus</strong>（真实世界最贵的酒庄之一），采收的决定有时候就在一个下午拍板。看到乌云来了？马上摘。还能再晴一周？继续等。就这一个决定，好年份和烂年份可能就此分开。</div>
+  </div>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">第三步</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 4: THE WINERY — FERMENTATION
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">第三步 — 转化</p>
+  <h2 class="section-title">酒庄</h2>
+  <p class="section-subtitle">葡萄在这里变成酒——设备越好，你能控制的越多</p>
+  <div class="section-divider"></div>
+
+  <!-- Equipment progression -->
+  <div class="equipment-grid">
+    <!-- Basic tank -->
+    <div class="equipment-card">
+      <svg width="50" height="60" viewBox="0 0 50 60" fill="none">
+        <!-- basic tank -->
+        <rect x="10" y="8" width="30" height="40" rx="4" fill="rgba(60,30,40,0.6)" stroke="rgba(150,100,80,0.4)" stroke-width="1.5"/>
+        <rect x="14" y="12" width="22" height="28" rx="2" fill="rgba(100,40,50,0.3)"/>
+        <!-- wooden bands -->
+        <rect x="8" y="18" width="34" height="3" rx="1" fill="rgba(130,90,50,0.5)" stroke="rgba(160,110,60,0.3)" stroke-width="0.5"/>
+        <rect x="8" y="32" width="34" height="3" rx="1" fill="rgba(130,90,50,0.5)" stroke="rgba(160,110,60,0.3)" stroke-width="0.5"/>
+        <!-- valve -->
+        <circle cx="25" cy="53" r="4" fill="rgba(100,70,50,0.5)" stroke="rgba(150,100,60,0.4)" stroke-width="1"/>
+        <line x1="25" y1="48" x2="25" y2="57" stroke="rgba(150,100,60,0.4)" stroke-width="1"/>
+      </svg>
+      <div class="equipment-name">基础发酵桶</div>
+      <div class="equipment-desc">最基本的设备，温度不太好控制，但便宜能用。</div>
+      <div class="precision-bar">
+        <div class="pb-dot filled"></div>
+        <div class="pb-dot"></div>
+        <div class="pb-dot"></div>
+        <div class="pb-dot"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:6px;letter-spacing:0.1em">精准度</div>
+    </div>
+    <!-- Cooling tank -->
+    <div class="equipment-card active">
+      <svg width="50" height="60" viewBox="0 0 50 60" fill="none">
+        <!-- stainless tank body -->
+        <rect x="8" y="6" width="34" height="44" rx="5" fill="rgba(30,50,70,0.5)" stroke="rgba(80,140,200,0.4)" stroke-width="1.5"/>
+        <rect x="12" y="10" width="26" height="32" rx="3" fill="rgba(40,100,160,0.15)"/>
+        <!-- cooling coils -->
+        <path d="M 16 20 Q 34 18 34 24 Q 34 30 16 28 Q 16 34 34 32" stroke="rgba(100,180,220,0.5)" stroke-width="1.5" fill="none"/>
+        <!-- thermometer -->
+        <rect x="39" y="14" width="4" height="18" rx="2" fill="rgba(60,120,180,0.4)" stroke="rgba(100,160,220,0.4)" stroke-width="1"/>
+        <circle cx="41" cy="34" r="4" fill="rgba(100,160,220,0.5)" stroke="rgba(120,180,240,0.4)" stroke-width="1"/>
+        <!-- valve -->
+        <circle cx="25" cy="55" r="4" fill="rgba(60,100,140,0.5)" stroke="rgba(80,140,200,0.4)" stroke-width="1"/>
+      </svg>
+      <div class="equipment-name">控温发酵罐</div>
+      <div class="equipment-desc">能控温了，香气保留得更好，酒味更干净。</div>
+      <div class="precision-bar">
+        <div class="pb-dot filled"></div>
+        <div class="pb-dot filled"></div>
+        <div class="pb-dot"></div>
+        <div class="pb-dot"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:6px;letter-spacing:0.1em">精准度</div>
+    </div>
+    <!-- Precision tank -->
+    <div class="equipment-card">
+      <svg width="50" height="60" viewBox="0 0 50 60" fill="none">
+        <!-- premium tank -->
+        <rect x="6" y="4" width="36" height="46" rx="6" fill="rgba(20,40,30,0.5)" stroke="rgba(201,176,55,0.5)" stroke-width="1.5"/>
+        <rect x="10" y="8" width="28" height="34" rx="4" fill="rgba(40,80,50,0.15)"/>
+        <!-- advanced readings -->
+        <rect x="14" y="44" width="20" height="8" rx="2" fill="rgba(20,50,30,0.7)" stroke="rgba(201,176,55,0.3)" stroke-width="0.5"/>
+        <rect x="16" y="45.5" width="5" height="1" rx="0.5" fill="rgba(201,176,55,0.6)"/>
+        <rect x="22" y="45.5" width="3" height="1" rx="0.5" fill="rgba(100,200,120,0.5)"/>
+        <!-- precision coils -->
+        <path d="M 12 18 Q 36 16 36 22 Q 36 26 12 24" stroke="rgba(201,176,55,0.4)" stroke-width="1.5" fill="none"/>
+        <path d="M 12 28 Q 36 26 36 32 Q 36 36 12 34" stroke="rgba(201,176,55,0.35)" stroke-width="1.5" fill="none"/>
+        <!-- glow -->
+        <rect x="6" y="4" width="36" height="46" rx="6" fill="none" stroke="rgba(201,176,55,0.15)" stroke-width="3"/>
+      </svg>
+      <div class="equipment-name">精准控制系统</div>
+      <div class="equipment-desc">顶配设备，全程精确监控，能把酒的品质拉满。</div>
+      <div class="precision-bar">
+        <div class="pb-dot filled"></div>
+        <div class="pb-dot filled"></div>
+        <div class="pb-dot filled"></div>
+        <div class="pb-dot filled"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:6px;letter-spacing:0.1em">精准度</div>
+    </div>
+  </div>
+
+  <!-- Sliders -->
+  <div class="sliders-box">
+    <div style="font-size:13px;font-weight:600;letter-spacing:0.15em;color:var(--gold-dim);margin-bottom:16px">拖动滑块——每个参数都会影响最终口感</div>
+
+    <div class="slider-row">
+      <div class="slider-name">发酵温度</div>
+      <div class="slider-track">
+        <div class="slider-fill" style="width:60%"></div>
+        <div class="slider-thumb" style="left:60%"></div>
+      </div>
+      <div class="slider-effect">影响果味浓度和单宁强度</div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-name">泡皮时间</div>
+      <div class="slider-track">
+        <div class="slider-fill" style="width:75%"></div>
+        <div class="slider-thumb" style="left:75%"></div>
+      </div>
+      <div class="slider-effect">泡得越久颜色越深、口感越厚</div>
+    </div>
+    <div class="slider-row">
+      <div class="slider-name">压榨时机</div>
+      <div class="slider-track">
+        <div class="slider-fill" style="width:45%"></div>
+        <div class="slider-thumb" style="left:45%"></div>
+      </div>
+      <div class="slider-effect">影响口感细腻度和酒体轻重</div>
+    </div>
+  </div>
+
+  <div class="parallel-box" style="margin-top:20px">
+    <div class="parallel-icon">⚗️</div>
+    <div class="parallel-text">在 <strong>Domaine de la Romanée-Conti</strong>（世界上最贵的酒庄），发酵温度每小时都要盯。差个两三度，酒出来就是<strong>丝滑柔和还是硬朗有劲</strong>，完全两回事。游戏里的每个滑块，就是在还原这种真实的选择。</div>
+  </div>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">第四步</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 5: THE BARREL ROOM
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">第四步 — 熟化</p>
+  <h2 class="section-title">橡木桶陈室</h2>
+  <p class="section-subtitle">用什么桶存酒、存多久——直接改变酒的味道</p>
+  <div class="section-divider"></div>
+
+  <div class="barrel-grid">
+
+    <!-- Stainless -->
+    <div class="barrel-card bc-stainless">
+      <svg width="46" height="52" viewBox="0 0 46 52" fill="none">
+        <rect x="8" y="4" width="30" height="40" rx="5" fill="rgba(30,60,80,0.5)" stroke="rgba(80,150,200,0.5)" stroke-width="1.5"/>
+        <rect x="8" y="4" width="30" height="40" rx="5" fill="none" stroke="rgba(140,200,240,0.2)" stroke-width="3"/>
+        <line x1="8" y1="16" x2="38" y2="16" stroke="rgba(80,150,200,0.3)" stroke-width="1"/>
+        <line x1="8" y1="30" x2="38" y2="30" stroke="rgba(80,150,200,0.3)" stroke-width="1"/>
+        <circle cx="23" cy="47" r="3" fill="rgba(60,110,150,0.5)" stroke="rgba(80,150,200,0.4)" stroke-width="1"/>
+        <!-- sheen -->
+        <rect x="11" y="7" width="6" height="18" rx="3" fill="rgba(200,230,255,0.08)"/>
+      </svg>
+      <div class="barrel-type">不锈钢罐</div>
+      <div class="barrel-flavor">纯粹果味</div>
+      <div class="barrel-notes">不沾橡木味，保留最纯的果香。白葡萄酒和想早点喝的红酒适合用这个。</div>
+      <div class="freshness-dots">
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:4px;letter-spacing:0.1em">新鲜度</div>
+    </div>
+
+    <!-- American Oak -->
+    <div class="barrel-card bc-american">
+      <svg width="46" height="52" viewBox="0 0 46 52" fill="none">
+        <!-- barrel shape -->
+        <path d="M 14 4 Q 8 12 8 24 Q 8 36 14 44 L 32 44 Q 38 36 38 24 Q 38 12 32 4 Z" fill="rgba(80,50,15,0.5)" stroke="rgba(200,140,60,0.5)" stroke-width="1.5"/>
+        <!-- bands -->
+        <path d="M 9 18 Q 23 14 37 18" stroke="rgba(160,100,40,0.6)" stroke-width="2" fill="none"/>
+        <path d="M 9 30 Q 23 34 37 30" stroke="rgba(160,100,40,0.6)" stroke-width="2" fill="none"/>
+        <!-- grain lines -->
+        <line x1="16" y1="8" x2="16" y2="40" stroke="rgba(160,110,50,0.2)" stroke-width="0.5"/>
+        <line x1="23" y1="6" x2="23" y2="42" stroke="rgba(160,110,50,0.2)" stroke-width="0.5"/>
+        <line x1="30" y1="8" x2="30" y2="40" stroke="rgba(160,110,50,0.2)" stroke-width="0.5"/>
+        <!-- bung -->
+        <ellipse cx="23" cy="24" rx="4" ry="3" fill="rgba(140,90,40,0.6)" stroke="rgba(180,120,50,0.4)" stroke-width="1"/>
+      </svg>
+      <div class="barrel-type">美国橡木桶</div>
+      <div class="barrel-flavor">香草与椰子</div>
+      <div class="barrel-notes">木头味浓，带甜香。木纹粗，透气快，适合厚重的红酒。</div>
+      <div class="freshness-dots">
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot empty"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:4px;letter-spacing:0.1em">新鲜度</div>
+    </div>
+
+    <!-- Hungarian Oak -->
+    <div class="barrel-card bc-hungarian">
+      <svg width="46" height="52" viewBox="0 0 46 52" fill="none">
+        <path d="M 14 4 Q 8 12 8 24 Q 8 36 14 44 L 32 44 Q 38 36 38 24 Q 38 12 32 4 Z" fill="rgba(55,30,70,0.5)" stroke="rgba(150,100,190,0.5)" stroke-width="1.5"/>
+        <path d="M 9 18 Q 23 14 37 18" stroke="rgba(120,80,160,0.5)" stroke-width="2" fill="none"/>
+        <path d="M 9 30 Q 23 34 37 30" stroke="rgba(120,80,160,0.5)" stroke-width="2" fill="none"/>
+        <line x1="16" y1="8" x2="16" y2="40" stroke="rgba(120,80,140,0.2)" stroke-width="0.5"/>
+        <line x1="23" y1="6" x2="23" y2="42" stroke="rgba(120,80,140,0.2)" stroke-width="0.5"/>
+        <line x1="30" y1="8" x2="30" y2="40" stroke="rgba(120,80,140,0.2)" stroke-width="0.5"/>
+        <ellipse cx="23" cy="24" rx="4" ry="3" fill="rgba(100,60,130,0.6)" stroke="rgba(150,100,180,0.4)" stroke-width="1"/>
+        <!-- decorative hungarian pattern hint -->
+        <path d="M 14 24 Q 18 20 23 24 Q 28 28 32 24" stroke="rgba(150,100,180,0.2)" stroke-width="1" fill="none"/>
+      </svg>
+      <div class="barrel-type">匈牙利橡木桶</div>
+      <div class="barrel-flavor">辛香与结构感</div>
+      <div class="barrel-notes">木纹比美国桶细，加的香料味不会太抢戏。性格在美国桶和法国桶之间，比较万能。</div>
+      <div class="freshness-dots">
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot empty"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:4px;letter-spacing:0.1em">新鲜度</div>
+    </div>
+
+    <!-- French Oak -->
+    <div class="barrel-card bc-french">
+      <svg width="46" height="52" viewBox="0 0 46 52" fill="none">
+        <path d="M 14 4 Q 8 12 8 24 Q 8 36 14 44 L 32 44 Q 38 36 38 24 Q 38 12 32 4 Z" fill="rgba(50,30,10,0.6)" stroke="rgba(201,176,55,0.6)" stroke-width="1.5"/>
+        <!-- gold shimmer glow -->
+        <path d="M 14 4 Q 8 12 8 24 Q 8 36 14 44 L 32 44 Q 38 36 38 24 Q 38 12 32 4 Z" fill="none" stroke="rgba(201,176,55,0.15)" stroke-width="4"/>
+        <path d="M 9 18 Q 23 14 37 18" stroke="rgba(201,176,55,0.5)" stroke-width="2" fill="none"/>
+        <path d="M 9 30 Q 23 34 37 30" stroke="rgba(201,176,55,0.5)" stroke-width="2" fill="none"/>
+        <line x1="16" y1="8" x2="16" y2="40" stroke="rgba(180,150,60,0.15)" stroke-width="0.5"/>
+        <line x1="23" y1="6" x2="23" y2="42" stroke="rgba(180,150,60,0.15)" stroke-width="0.5"/>
+        <line x1="30" y1="8" x2="30" y2="40" stroke="rgba(180,150,60,0.15)" stroke-width="0.5"/>
+        <ellipse cx="23" cy="24" rx="4" ry="3" fill="rgba(160,130,40,0.5)" stroke="rgba(201,176,55,0.5)" stroke-width="1"/>
+      </svg>
+      <div class="barrel-type">法国橡木桶</div>
+      <div class="barrel-flavor">烤香与丝滑</div>
+      <div class="barrel-notes">最高级的选择，木纹细腻，跟酒融合得最好。大酒用了直接起飞，但轻酒可能会被木味盖住。</div>
+      <div class="freshness-dots">
+        <div class="fd-dot full"></div>
+        <div class="fd-dot full"></div>
+        <div class="fd-dot empty"></div>
+        <div class="fd-dot empty"></div>
+      </div>
+      <div style="font-size:13px;color:var(--cream-dim);margin-top:4px;letter-spacing:0.1em">新鲜度</div>
+    </div>
+
+  </div>
+
+  <!-- Aging note -->
+  <div class="aging-note">
+    <div class="aging-note-icon">⏳</div>
+    <div class="aging-note-text">
+      存放时间越长，酒味越复杂——但别贪。<strong>放太久，新鲜感就没了。</strong>就算是再好的酒，在桶里闷太久也会变得无聊。关键是知道什么时候该收手。
+    </div>
+  </div>
+
+  <div class="parallel-box" style="margin-top:16px">
+    <div class="parallel-icon">🪵</div>
+    <div class="parallel-text">波尔多顶级酒庄会用 <strong>100% 全新法国橡木桶</strong>，存上 18 到 24 个月。但如果拿来存口感轻的酒，木味直接把酒味盖没了。<strong>什么酒配什么桶</strong>，选错了就前功尽弃。</div>
+  </div>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">第五步</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 6: THE 4 PILLARS
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">第五步 — 评价</p>
+  <h2 class="section-title">四大维度</h2>
+  <p class="section-subtitle">游戏里的评分系统，和现实中酒评家用的一样</p>
+  <div class="section-divider"></div>
+
+  <div class="pillars-layout">
+    <!-- Left pillars -->
+    <div class="pillars-left">
+      <div class="pillar-card">
+        <div class="pillar-pct">权重 30%</div>
+        <div class="pillar-name">结构感</div>
+        <div class="pillar-tagline">"酒的骨架"</div>
+        <div class="pillar-desc">单宁、酸度、酒精度三者的平衡。决定了这瓶酒能不能越放越好喝。</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-pct">权重 20%</div>
+        <div class="pillar-name">典型性</div>
+        <div class="pillar-tagline">"忠于其根"</div>
+        <div class="pillar-desc">这酒喝起来像不像它该有的样子？土壤、品种、产区的特色有没有体现出来。</div>
+      </div>
+    </div>
+
+    <!-- Radar chart center -->
+    <div class="radar-wrap">
+      <svg width="320" height="320" viewBox="-20 -10 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background circles -->
+        <circle cx="140" cy="140" r="110" stroke="rgba(201,176,55,0.08)" stroke-width="1"/>
+        <circle cx="140" cy="140" r="82" stroke="rgba(201,176,55,0.08)" stroke-width="1"/>
+        <circle cx="140" cy="140" r="55" stroke="rgba(201,176,55,0.08)" stroke-width="1"/>
+        <circle cx="140" cy="140" r="27" stroke="rgba(201,176,55,0.08)" stroke-width="1"/>
+
+        <!-- Axis lines (4 axes: top, right, bottom, left) -->
+        <line x1="140" y1="30" x2="140" y2="250" stroke="rgba(201,176,55,0.12)" stroke-width="1"/>
+        <line x1="30" y1="140" x2="250" y2="140" stroke="rgba(201,176,55,0.12)" stroke-width="1"/>
+
+        <!-- Wine shape — a stylized quad polygon -->
+        <polygon
+          points="140,55 241,140 140,210 82,140"
+          fill="rgba(140,30,50,0.35)"
+          stroke="rgba(201,176,55,0.7)"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
+
+        <!-- Axis endpoint dots -->
+        <circle cx="140" cy="30" r="4" fill="rgba(201,176,55,0.6)"/>
+        <circle cx="250" cy="140" r="4" fill="rgba(201,176,55,0.6)"/>
+        <circle cx="140" cy="250" r="4" fill="rgba(201,176,55,0.6)"/>
+        <circle cx="30" cy="140" r="4" fill="rgba(201,176,55,0.6)"/>
+
+        <!-- Data point dots on polygon -->
+        <circle cx="140" cy="55" r="5" fill="var(--gold)" opacity="0.9"/>
+        <circle cx="241" cy="140" r="5" fill="var(--gold)" opacity="0.9"/>
+        <circle cx="140" cy="210" r="5" fill="var(--gold)" opacity="0.9"/>
+        <circle cx="82" cy="140" r="5" fill="var(--gold)" opacity="0.9"/>
+
+        <!-- Center glow -->
+        <circle cx="140" cy="140" r="8" fill="rgba(201,176,55,0.15)"/>
+        <circle cx="140" cy="140" r="4" fill="rgba(201,176,55,0.4)"/>
+
+        <!-- Axis labels -->
+        <text x="140" y="8" fill="rgba(201,176,55,0.8)" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="15" font-weight="600" text-anchor="middle">结构感</text>
+        <text x="270" y="145" fill="rgba(201,176,55,0.8)" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="15" font-weight="600" text-anchor="start">余味</text>
+        <text x="140" y="278" fill="rgba(201,176,55,0.8)" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="15" font-weight="600" text-anchor="middle">典型性</text>
+        <text x="10" y="145" fill="rgba(201,176,55,0.8)" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="15" font-weight="600" text-anchor="end">复杂度</text>
+      </svg>
+    </div>
+
+    <!-- Right pillars -->
+    <div class="pillars-right">
+      <div class="pillar-card">
+        <div class="pillar-pct">权重 25%</div>
+        <div class="pillar-name">余味</div>
+        <div class="pillar-tagline">"喝完嘴里还有味儿"</div>
+        <div class="pillar-desc">咽下去之后味道能留多久？好酒的余味能在嘴里待好几分钟，跟陈年时间和用什么桶都有关。</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-pct">权重 25%</div>
+        <div class="pillar-name">复杂度</div>
+        <div class="pillar-tagline">"多层次的风味"</div>
+        <div class="pillar-desc">能同时闻到果味、发酵带来的味道、和存放产生的味道——层次越多，酒越高级。混酿、桶的新旧、藤的年龄都有影响。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="parallel-box">
+    <div class="parallel-icon">🎓</div>
+    <div class="parallel-text">这就是 <strong>Wine Spectator、Robert Parker</strong> 这些现实中的权威酒评家打分的方式。骨架、个性、余味、层次——游戏里用的和真的一模一样。</div>
+  </div>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">第六步</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 7: THE BLEND
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">第六步 — 进阶技艺</p>
+  <h2 class="section-title">混酿</h2>
+  <p class="section-subtitle">把不同的酒混在一起——1+1可以大于2</p>
+  <div class="section-divider"></div>
+
+  <div class="blend-layout">
+
+    <!-- Left: Merlot -->
+    <div class="blend-side">
+      <svg width="50" height="60" viewBox="0 0 50 60" fill="none">
+        <!-- grape cluster red/purple -->
+        <circle cx="25" cy="16" r="7" fill="rgba(120,40,80,0.6)" stroke="rgba(160,60,100,0.5)" stroke-width="1.5"/>
+        <circle cx="16" cy="24" r="7" fill="rgba(110,35,75,0.6)" stroke="rgba(150,55,95,0.5)" stroke-width="1.5"/>
+        <circle cx="34" cy="24" r="7" fill="rgba(115,38,78,0.6)" stroke="rgba(155,58,98,0.5)" stroke-width="1.5"/>
+        <circle cx="25" cy="32" r="7" fill="rgba(120,40,80,0.6)" stroke="rgba(160,60,100,0.5)" stroke-width="1.5"/>
+        <circle cx="12" cy="33" r="6" fill="rgba(105,32,72,0.5)" stroke="rgba(145,52,92,0.4)" stroke-width="1"/>
+        <circle cx="38" cy="33" r="6" fill="rgba(105,32,72,0.5)" stroke="rgba(145,52,92,0.4)" stroke-width="1"/>
+        <!-- stem -->
+        <line x1="25" y1="8" x2="25" y2="2" stroke="rgba(100,70,40,0.6)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="25" y1="4" x2="18" y2="1" stroke="rgba(100,70,40,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="blend-label" style="color:#c06080">70%</div>
+      <div class="blend-grape">Merlot</div>
+      <div class="blend-traits">
+        <div class="blend-trait">李子与樱桃果味</div>
+        <div class="blend-trait">柔滑圆润的单宁</div>
+        <div class="blend-trait">适合早期饮用</div>
+      </div>
+    </div>
+
+    <div class="blend-operator">
+      <div class="blend-plus">+</div>
+      <div style="font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;font-size:13px;color:var(--cream-dim);text-align:center;margin-top:4px">混酿<br>融合</div>
+    </div>
+
+    <!-- Right: Cab Franc -->
+    <div class="blend-side">
+      <svg width="50" height="60" viewBox="0 0 50 60" fill="none">
+        <!-- grape cluster darker/bluer -->
+        <circle cx="25" cy="16" r="7" fill="rgba(60,30,100,0.6)" stroke="rgba(90,50,150,0.5)" stroke-width="1.5"/>
+        <circle cx="16" cy="24" r="7" fill="rgba(55,28,95,0.6)" stroke="rgba(85,48,145,0.5)" stroke-width="1.5"/>
+        <circle cx="34" cy="24" r="7" fill="rgba(58,29,98,0.6)" stroke="rgba(88,49,148,0.5)" stroke-width="1.5"/>
+        <circle cx="25" cy="32" r="7" fill="rgba(60,30,100,0.6)" stroke="rgba(90,50,150,0.5)" stroke-width="1.5"/>
+        <circle cx="12" cy="33" r="6" fill="rgba(50,25,88,0.5)" stroke="rgba(80,45,135,0.4)" stroke-width="1"/>
+        <circle cx="38" cy="33" r="6" fill="rgba(50,25,88,0.5)" stroke="rgba(80,45,135,0.4)" stroke-width="1"/>
+        <line x1="25" y1="8" x2="25" y2="2" stroke="rgba(100,70,40,0.6)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="25" y1="4" x2="18" y2="1" stroke="rgba(100,70,40,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="blend-label" style="color:#8060c0">30%</div>
+      <div class="blend-grape">Cabernet Franc</div>
+      <div class="blend-traits">
+        <div class="blend-trait">石墨与香料气息</div>
+        <div class="blend-trait">紧实有力的单宁</div>
+        <div class="blend-trait">提升香气层次</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Result -->
+  <div class="blend-result">
+    <div class="blend-result-title">混出来的酒，比单独的更强</div>
+    <div class="blend-result-desc">Merlot 的柔和压住了 Franc 的冲劲，Franc 的香气又给 Merlot 加了层次。混在一起，结构和复杂度都上了一个台阶。</div>
+    <div class="blend-synergy">
+      <div class="synergy-item">
+        <div class="synergy-dot" style="background:rgba(201,176,55,0.8)"></div>
+        <span>结构感加成</span>
+      </div>
+      <div class="synergy-item">
+        <div class="synergy-dot" style="background:rgba(100,180,120,0.8)"></div>
+        <span>复杂度提升</span>
+      </div>
+      <div class="synergy-item">
+        <div class="synergy-dot" style="background:rgba(160,100,200,0.8)"></div>
+        <span>香气互相加持</span>
+      </div>
+      <div class="synergy-item">
+        <div class="synergy-dot" style="background:rgba(200,120,60,0.8)"></div>
+        <span>余味延长</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="parallel-box" style="margin-top:16px">
+    <div class="parallel-icon">🧪</div>
+    <div class="parallel-text"><strong>Château Pétrus</strong> 几乎只用 Merlot；<strong>Cheval Blanc</strong> 却大量加 Cabernet Franc。两家都是世界最贵的酒——所以没有标准答案。在游戏里，混酿比例由你自己探索。</div>
+  </div>
+</div>
+
+<!-- connector -->
+<div class="connector">
+  <span class="connector-badge">最终一步</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 8: THE VERDICT
+══════════════════════════════════════════════════════ -->
+<div class="section">
+  <p class="section-label">最终一步 — 市场</p>
+  <h2 class="section-title">最终评判</h2>
+  <p class="section-subtitle">专家和普通人的口味不一样——你的酒要两边都讨好</p>
+  <div class="section-divider"></div>
+
+  <div class="verdict-grid">
+
+    <!-- Critic -->
+    <div class="verdict-card vc-critic">
+      <!-- monocle face SVG -->
+      <svg width="56" height="56" viewBox="0 0 56 56" class="verdict-icon">
+        <!-- head -->
+        <circle cx="28" cy="24" r="18" fill="rgba(30,30,60,0.5)" stroke="rgba(100,100,180,0.5)" stroke-width="1.5"/>
+        <!-- monocle -->
+        <circle cx="36" cy="22" r="8" fill="none" stroke="rgba(201,176,55,0.7)" stroke-width="2"/>
+        <line x1="44" y1="28" x2="48" y2="34" stroke="rgba(201,176,55,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- eye left (normal) -->
+        <ellipse cx="20" cy="22" rx="3" ry="2.5" fill="rgba(200,200,240,0.7)"/>
+        <circle cx="20" cy="22" r="1.5" fill="rgba(40,40,80,0.9)"/>
+        <!-- eye right (through monocle) -->
+        <ellipse cx="36" cy="22" rx="3" ry="2.5" fill="rgba(200,200,240,0.7)"/>
+        <circle cx="36" cy="22" r="1.5" fill="rgba(40,40,80,0.9)"/>
+        <!-- mustache -->
+        <path d="M 22 30 Q 24 27 28 29 Q 32 31 34 28" stroke="rgba(180,160,120,0.6)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- hat brim -->
+        <rect x="10" y="6" width="36" height="4" rx="2" fill="rgba(40,40,70,0.6)" stroke="rgba(80,80,120,0.3)" stroke-width="1"/>
+        <!-- tasting glass -->
+        <path d="M 28 44 Q 24 52 32 52" stroke="rgba(100,100,180,0.4)" stroke-width="1.5" fill="none"/>
+      </svg>
+      <div class="verdict-title">评论家</div>
+      <div class="verdict-subtitle">"越复杂越好"</div>
+      <div style="font-size:14px;color:var(--cream-dim);line-height:1.75;text-align:left;margin-top:8px">
+        酒评家喜欢有挑战性的酒。结构好、余味长、层次多才能拿高分。虽然很难伺候，但一旦拿到高分，高端买家自己就来了。
+      </div>
+      <div class="verdict-rewards" style="margin-top:14px">
+        <div class="verdict-reward">
+          <div class="vr-dot" style="background:rgba(100,100,200,0.8)"></div>
+          <span>高分 = 名气暴涨</span>
+        </div>
+        <div class="verdict-reward">
+          <div class="vr-dot" style="background:rgba(100,100,200,0.8)"></div>
+          <span>解锁有钱买家</span>
+        </div>
+        <div class="verdict-reward">
+          <div class="vr-dot" style="background:rgba(100,100,200,0.8)"></div>
+          <span>有机会拿年度大奖</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="verdict-vs">VS</div>
+
+    <!-- Public -->
+    <div class="verdict-card vc-public">
+      <!-- happy face with heart -->
+      <svg width="56" height="56" viewBox="0 0 56 56" class="verdict-icon">
+        <circle cx="28" cy="28" r="22" fill="rgba(60,20,25,0.5)" stroke="rgba(180,60,80,0.4)" stroke-width="1.5"/>
+        <!-- eyes -->
+        <circle cx="20" cy="24" r="3.5" fill="rgba(240,180,180,0.8)"/>
+        <circle cx="36" cy="24" r="3.5" fill="rgba(240,180,180,0.8)"/>
+        <circle cx="20" cy="24" r="1.8" fill="rgba(80,30,35,0.9)"/>
+        <circle cx="36" cy="24" r="1.8" fill="rgba(80,30,35,0.9)"/>
+        <!-- smile -->
+        <path d="M 18 34 Q 28 44 38 34" stroke="rgba(240,140,160,0.7)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- heart -->
+        <path d="M 28 14 C 24 10 18 12 18 17 C 18 21 22 25 28 30 C 34 25 38 21 38 17 C 38 12 32 10 28 14 Z" fill="rgba(200,50,70,0.4)" stroke="rgba(200,50,70,0.5)" stroke-width="1"/>
+      </svg>
+      <div class="verdict-title">大众消费者</div>
+      <div class="verdict-subtitle">"好喝就完事了"</div>
+      <div style="font-size:14px;color:var(--cream-dim);line-height:1.75;text-align:left;margin-top:8px">
+        普通人靠嘴投票。好不好入口、果味够不够、价格划不划算——就看这三点。一瓶好喝又便宜的酒，销量能吊打那些复杂但难懂的酒。大众评分直接影响你的销量和口碑。
+      </div>
+      <div class="verdict-rewards" style="margin-top:14px">
+        <div class="verdict-reward">
+          <div class="vr-dot" style="background:rgba(200,60,80,0.8)"></div>
+          <span>本地销量变多</span>
+        </div>
+        <div class="verdict-reward">
+          <div class="vr-dot" style="background:rgba(200,60,80,0.8)"></div>
+          <span>稳定赚钱，不愁吃饭</span>
+        </div>
+        <div class="verdict-reward">
+          <div class="vr-dot" style="background:rgba(200,60,80,0.8)"></div>
+          <span>餐厅和主厨抢着要</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Score Scale -->
+  <div style="margin-top:24px">
+    <div style="font-size:13px;font-weight:600;letter-spacing:0.15em;color:var(--gold-dim);margin-bottom:12px;text-align:center">评分光谱</div>
+    <div class="score-scale">
+      <div class="score-tier st-ordinary">
+        <div class="score-tier-num">60–69</div>
+        <div class="score-tier-label">普通</div>
+      </div>
+      <div class="score-tier st-good">
+        <div class="score-tier-num">70–79</div>
+        <div class="score-tier-label">良好</div>
+      </div>
+      <div class="score-tier st-great">
+        <div class="score-tier-num">80–89</div>
+        <div class="score-tier-label">优秀</div>
+      </div>
+      <div class="score-tier st-exceptional">
+        <div class="score-tier-num">90–95</div>
+        <div class="score-tier-label">卓越</div>
+      </div>
+      <div class="score-tier st-legendary">
+        <div class="score-tier-num">96–100</div>
+        <div class="score-tier-label">传奇</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="parallel-box" style="margin-top:20px">
+    <div class="parallel-icon">⭐</div>
+    <div class="parallel-text">现实中 Robert Parker 和 <strong>Wine Spectator</strong> 都说 90 分以上才算好酒——但一瓶 78 分、价格公道的酒，销量可能轻松碾压 94 分的天价酒。市场没有那么简单。</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════ -->
+<div class="footer-section">
+
+  <div style="display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:36px;opacity:0.5">
+    <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);max-width:200px"></div>
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="16" r="14" stroke="rgba(201,176,55,0.5)" stroke-width="1.5" fill="none"/>
+      <circle cx="16" cy="11" r="5" fill="rgba(120,40,60,0.5)" stroke="rgba(201,176,55,0.4)" stroke-width="1"/>
+      <circle cx="11" cy="17" r="5" fill="rgba(110,35,55,0.5)" stroke="rgba(201,176,55,0.4)" stroke-width="1"/>
+      <circle cx="21" cy="17" r="5" fill="rgba(115,38,58,0.5)" stroke="rgba(201,176,55,0.4)" stroke-width="1"/>
+    </svg>
+    <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);max-width:200px"></div>
+  </div>
+
+  <p class="footer-quote">"每一瓶酒，<em>都是你的作品。</em>"</p>
+  <p style="font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;font-size:17px;font-style:italic;color:var(--cream-dim);margin-bottom:28px">从种地到卖酒，你做的每一个选择，都能在最后那杯酒里喝出来。</p>
+
+  <div class="footer-divider"></div>
+
+  <div class="footer-game-name">Grand Cru: The Winemaker</div>
+  <div class="footer-tagline">Steam 抢先体验版发售中</div>
+
+  <div style="margin-top:24px;font-size:13px;color:var(--cream-faint);opacity:0.6;letter-spacing:0.05em">
+    种葡萄、酿酒、卖酒——一款真实到骨子里的酒庄经营游戏。
+  </div>
+
+</div>
+
+</body>
+</html>
